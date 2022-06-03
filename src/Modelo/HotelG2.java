@@ -43,7 +43,8 @@ public class HotelG2 {
             hd1.buscarHuesped(4);
             System.out.println(hd1.obtenerHuespedes());
             hd1.buscarHuesped(2);
-            hd1.borrarHuesped(4);
+            hd1.borrarHuesped(4); 
+            
             
             
             

@@ -7,6 +7,10 @@ package Modelo;
  */
 public class Huesped {
     
+    /*Hace muchas reservas
+    se vincula a la habitacion mediante reserva
+    */
+    
     
     private int id_huesped;
     private long dni;

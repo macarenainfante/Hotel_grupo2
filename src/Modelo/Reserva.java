@@ -22,29 +22,10 @@ public class Reserva {
     private double monto;
     private int estado;
     
-    public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut){
+    public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut, int dias, int estado){
         this.huesped = huesped;
         this.habitacion = habitacion;
         this.checkIn = checkIn;
         this.checkOut = checkOut;       
     }
-    
-    public void buscarReservaPorHuesped(){
-        
-    }
-    
-    public void cancelarReserva(){
-        
-    }
-    
-    public void calcularImporteTotal(){
-                
-    }
-    
-    public void crearReserva(){
-        
-    }
-    
-    
-    
 }

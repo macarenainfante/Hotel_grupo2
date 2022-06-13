@@ -26,6 +26,21 @@ public class Reserva {
         this.huesped = huesped;
         this.habitacion = habitacion;
         this.checkIn = checkIn;
-        this.checkOut = checkOut;       
+        this.checkOut = checkOut; 
+        this.dias=dias;
+        this.estado=estado;
     }
+    
+    public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut, int estado){
+        this.huesped = huesped;
+        this.habitacion = habitacion;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut; 
+        this.estado=estado;
+    }
+    
+    public Reserva(){       
+    }
+    
+    
 }

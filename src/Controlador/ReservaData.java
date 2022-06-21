@@ -165,7 +165,7 @@ public class ReservaData {
                 habitacion.setIdHabitacion(rs.getInt(1));
                 habitacion.setIdTipoHabitacion(rs.getInt(2));
                 habitacion.setPiso(rs.getInt(3));
-                habitacion.setEstado(rs.getInt(4));
+                habitacion.setEstado(rs.getBoolean(4));
                 habitacion.setNroHabitacion(rs.getInt(5));
                 habitacion.setActivo(rs.getBoolean(6));           
                                

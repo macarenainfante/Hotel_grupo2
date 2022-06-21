@@ -33,11 +33,10 @@ public class TipoHabitacionData {
     }
     
     
-        public void agregarTipoHabitacion(TipoHabitacion tipoHabitacion) {
-        String sql = "INTER INTO `tipo_habitacion`(`cantidadPers`, `cantCamas`, `tipoCamas`, `nombreTipoHabitacion`, `precio`, `activo`) VALUES ('?','?','?','?','?','?')";
+        public boolean agregarTipoHabitacion(TipoHabitacion tipoHabitacion) {
+        String sql = "INSERT INTO `tipo_habitacion`(`cantidadPers`, `cantCamas`, `tipoCamas`, `nombreTipoHabitacion`, `precio`, `activo`) VALUES ('?','?','?','?','?','?')";
 
         try {
-
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, tipoHabitacion.getMaxPersonas());
             ps.setInt(2, tipoHabitacion.getCantidadDeCamas());            
@@ -51,14 +50,14 @@ public class TipoHabitacionData {
             if (rs.next()) {
                 tipoHabitacion.setCodigo(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, " Tipo de Habitacion agregada correctamente");
-
+                return true;
+                
             } else {
-                JOptionPane.showMessageDialog(null, "No genero el id del tipo de habitacion ");
+                return false;
             }
-            ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion en agregar tipo de Habitacion " + ex);
-
+            JOptionPane.showMessageDialog(null, "Error de conexion al agregar tipo de habitacion");
+            return false;
         }
     }
         

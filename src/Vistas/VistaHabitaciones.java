@@ -24,6 +24,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     private HabitacionData habitacionData;
     private ArrayList <TipoHabitacion> listaTipoHabitaciones;
     Conexion conexion = new Conexion();
+    
 
     /**
      * Creates new form VistaHabitaciones
@@ -34,7 +35,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         this.habitaciones = habitaciones;
         habitacionData = new HabitacionData(conexion);
         listaTipoHabitaciones = tipoHabitacionData.obtenerTiposDeHabitaciones();
-        cargarTipoDeHabitaciones();
+        cargarTipoHabitaciones();
     }
 
     /**
@@ -56,13 +57,13 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         textPiso = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        cbTipoHabitacion = new javax.swing.JComboBox<>();
         rbEstado = new javax.swing.JRadioButton();
         botonGuardar = new javax.swing.JButton();
         botonModificar = new javax.swing.JButton();
         botonBorrar = new javax.swing.JButton();
         botonLimpiar = new javax.swing.JButton();
         botonSalir = new javax.swing.JButton();
+        cbTipoHabitacion = new javax.swing.JComboBox<>();
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
@@ -93,8 +94,6 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setText("Tipo de Habitacion:");
-
-        cbTipoHabitacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         rbEstado.setText("En refaccion");
 
@@ -184,8 +183,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGap(72, 72, 72)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(cbTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(224, 224, 224)
                         .addComponent(rbEstado))
@@ -226,9 +225,9 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textPiso, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(cbTipoHabitacion))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(rbEstado)
                 .addGap(53, 53, 53)
@@ -238,7 +237,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                     .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         pack();
@@ -281,7 +280,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
          HabitacionData hd = new HabitacionData(conexion);
-         TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
+         TipoHabitacion tipoHabitacion = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
          
         if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
             Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
@@ -340,11 +339,13 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
     
-        private void cargarTipoDeHabitaciones(){
-        //Carga las materias al ComboBox
-        listaTipoHabitaciones.forEach((item) -> {
+    private void cargarTipoHabitaciones(){
+        
+    //Carga los tipos de habitaciones al ComboBox
+        for(TipoHabitacion item:listaTipoHabitaciones){
             cbTipoHabitacion.addItem(item);
-        });
+    
+        }
     }
         
     public void limpiar(){
@@ -354,6 +355,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         textPiso.setText("");
         rbEstado.setSelected(false);
     }
+    
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

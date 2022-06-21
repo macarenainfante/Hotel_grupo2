@@ -309,7 +309,7 @@ public class VistaTipoHabitacion extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // TODO add your handling code here:
         
-        int idTipoHabitacion = Integer.parseInt(textIdTipoHabitacion.getText());
+        //int idTipoHabitacion = Integer.parseInt(textIdTipoHabitacion.getText());
         int cantidadPersonas = Integer.parseInt(textCantidadPers.getText());
         int cantidadCamas = Integer.parseInt(textCantidadCamas.getText());
         String tipoCamas = textTipoCamas.getText();
@@ -317,7 +317,7 @@ public class VistaTipoHabitacion extends javax.swing.JInternalFrame {
         Double precio = Double.valueOf(textPrecio.getText());
         boolean activo = checkBoxActivo.isSelected() ;
 
-        TipoHabitacion tipoHabitacion1 = new TipoHabitacion(idTipoHabitacion, cantidadPersonas, cantidadCamas, tipoCamas, tipoHabitacion, precio, activo);
+        TipoHabitacion tipoHabitacion1 = new TipoHabitacion(cantidadPersonas, cantidadCamas, tipoCamas, tipoHabitacion, precio, activo);
         tipoHabitaciones.add(tipoHabitacion1);
         tipoHabitacionData.agregarTipoHabitacion(tipoHabitacion1);
         JOptionPane.showMessageDialog(this, "Tipo de habitacion agregada correctamente");

@@ -39,11 +39,12 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         initComponents();
         this.conexion = new Conexion();
         this.huespedData = new HuespedData(conexion);
-        this.listarHuesped = huespedData.obtenerHuespedes();
-        cargarHuespedes();
+        listarHuesped = huespedData.obtenerHuespedes();
+        
         modelo = new DefaultTableModel();   
         armarCabeceraTabla();
         this.reservaData = new ReservaData(conexion);
+        cargarHuespedes();
     }
 
     /**
@@ -65,13 +66,14 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         jCalendarCheckOut = new com.toedter.calendar.JCalendar();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        textCantidadPersonas1 = new javax.swing.JTextField();
+        textPrecioTotal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHabitaciones = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         botonConfirmar = new javax.swing.JButton();
         botonBorrar = new javax.swing.JButton();
         botonSalir = new javax.swing.JButton();
+        botonCalcular = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
@@ -103,7 +105,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
         jLabel6.setText("Precio total:");
 
-        textCantidadPersonas1.setEditable(false);
+        textPrecioTotal.setEditable(false);
 
         tablaHabitaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -153,6 +155,16 @@ public class VistaReservas extends javax.swing.JInternalFrame {
             }
         });
 
+        botonCalcular.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        botonCalcular.setForeground(new java.awt.Color(0, 0, 153));
+        botonCalcular.setText("Calcular");
+        botonCalcular.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCalcularActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,23 +180,25 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                         .addGap(141, 141, 141)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(56, 56, 56)
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(botonCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(textCantidadPersonas1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(textPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(53, 53, 53)
                                         .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
@@ -204,7 +218,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                                         .addComponent(jCalendarCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,18 +242,19 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                     .addComponent(jCalendarCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCalendarCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textCantidadPersonas1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(137, 137, 137))
         );
 
@@ -252,6 +267,8 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         DefaultTableModel model;
         model = (DefaultTableModel) tablaHabitaciones.getModel();
         model.setRowCount(0);
+        
+        
 
 
     }//GEN-LAST:event_cbHuespedesActionPerformed
@@ -316,6 +333,48 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_botonSalirActionPerformed
 
+    private void botonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalcularActionPerformed
+        // TODO add your handling code here:
+        
+        /* int filaSeleccionada=tablaHabitaciones.getSelectedRow();
+    
+        if(filaSeleccionada!=-1){
+                
+            Huesped h=(Huesped)cbHuespedes.getSelectedItem();
+            
+            
+            int idHabitacion=(Integer)modelo.getValueAt(filaSeleccionada,0);
+            int numeroHabitacion=(int)modelo.getValueAt(filaSeleccionada,1);
+            TipoHabitacion tipoHabitacion=(TipoHabitacion)modelo.getValueAt(filaSeleccionada, 2);
+            int piso=(int)modelo.getValueAt(filaSeleccionada,3);
+            
+            Habitacion hab = new Habitacion(idHabitacion,tipoHabitacion, piso, true, numeroHabitacion, true);
+            
+            //jCalendar
+            
+            SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaIn = formato.format(jCalendarCheckIn.getDate());
+            String fechaOut = formato.format(jCalendarCheckOut.getDate());
+            DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate checkIn = LocalDate.parse(fechaIn, formato2);
+            LocalDate checkOut = LocalDate.parse(fechaOut, formato2);
+            
+            Reserva reserva= new Reserva(h, hab, Integer.parseInt(textCantidadPersonas.getText()),checkIn, checkOut, 1);
+            
+            double precio = 
+            textPrecioTotal.setText(precio);
+            
+            borrarFilasTabla();
+       
+        }
+        
+    
+        
+        */
+        
+        
+    }//GEN-LAST:event_botonCalcularActionPerformed
+
     private void cargarHuespedes(){
     //Carga las materias al ComboBox
     for(Huesped item:listarHuesped){
@@ -346,6 +405,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBorrar;
+    private javax.swing.JButton botonCalcular;
     private javax.swing.JButton botonConfirmar;
     private javax.swing.JButton botonSalir;
     private javax.swing.JComboBox<Huesped> cbHuespedes;
@@ -361,6 +421,6 @@ public class VistaReservas extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaHabitaciones;
     private javax.swing.JTextField textCantidadPersonas;
-    private javax.swing.JTextField textCantidadPersonas1;
+    private javax.swing.JTextField textPrecioTotal;
     // End of variables declaration//GEN-END:variables
 }

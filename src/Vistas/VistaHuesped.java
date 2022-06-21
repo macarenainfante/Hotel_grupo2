@@ -366,7 +366,7 @@ if (!"".equals(textNombreHuesped.getText()) && !"".equals(textApellidoHuesped.ge
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
         // TODO add your handling code here:
-
+        botonGuardar.setEnabled(true);
         limpiar();
 
     }//GEN-LAST:event_botonLimpiarActionPerformed

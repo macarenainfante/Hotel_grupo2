@@ -89,14 +89,11 @@ public class TipoHabitacionData {
                 JOptionPane.showMessageDialog(null, "Se encontro Tipo de Habitacion");
 
             } else {
-
                 JOptionPane.showMessageDialog(null, " Id de Tipo de Habitacion inexistente");
             }
             ps.close();
         } catch (SQLException ex) {
-
             JOptionPane.showMessageDialog(null, " Error de conexion desde buscar Tipo de Habitacion " + ex);
-
         }
 
         return tipoHabitacion;

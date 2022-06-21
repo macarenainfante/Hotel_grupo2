@@ -33,7 +33,7 @@ public class HabitacionData {
     
     
     public boolean altaHabitacion(Habitacion habitacion) {
-        String sql = "INSERT INTO habitacion (id_tipo_habitacion, piso, estado)  VALUES (?, ?, ?)";
+        String sql = "INSERT INTO habitacion (idHabitacion, piso, estado)  VALUES (?, ?, ?)";
 
         try {
             ResultSet rs;
@@ -62,7 +62,7 @@ public class HabitacionData {
     
     public boolean bajaHabitacion(Habitacion habitacion){
         
-            String sql = "DELETE FROM habitacion WHERE id_habitacion=?";
+            String sql = "DELETE FROM habitacion WHERE idHabitacion=?";
 
         try {
             //ResultSet rs;
@@ -82,7 +82,7 @@ public class HabitacionData {
     
     public boolean modificacionHabitacion(Habitacion habitacion){
         
-        String sql = "UPDATE habitacion (id_tipo_habitacion, piso, estado) VALUES (?, ?, ?) WHERE id_habitacion=?";
+        String sql = "UPDATE habitacion (id_tipo_habitacion, piso, estado) VALUES (?, ?, ?) WHERE idHabitacion=?";
 
         try {
             //ResultSet rs;

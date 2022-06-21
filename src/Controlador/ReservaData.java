@@ -38,7 +38,7 @@ public class ReservaData {
         ArrayList<Reserva> reservas = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM inscripcion WHERE idAlumno = ?;";
+            String sql = "SELECT * FROM inscripcion WHERE idHuesped = ?;";
 
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, idHuesped);
@@ -57,8 +57,7 @@ public class ReservaData {
 
                 Habitacion hab = buscarHabitacion(resultSet.getInt("idHabitacion"));
                 reserva.setHabitacion(hab);
-                //inscripcion.setNota(resultSet.getInt("nota"));
-
+                
                 reservas.add(reserva);
             }
             statement.close();

@@ -101,6 +101,9 @@ public class TipoHabitacion {
         }
         
     
- 
+     @Override
+    public String toString() {
+        return "Tipo de Habitacion " + codigo + ": " + nombreTipoHabitacion + " " + " Personas: "+maxPersonas;
+    }
     
 }

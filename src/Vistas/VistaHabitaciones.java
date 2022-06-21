@@ -34,7 +34,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         initComponents();
         this.habitaciones = habitaciones;
         habitacionData = new HabitacionData(conexion);
-        listaTipoHabitaciones = tipoHabitacionData.obtenerTiposDeHabitaciones();
+        tipoHabitacionData = new TipoHabitacionData(conexion);        
+        listaTipoHabitaciones = tipoHabitacionData.obtenerTiposDeHabitaciones();        
         cargarTipoHabitaciones();
     }
 

@@ -37,13 +37,13 @@ public class VistaReservas extends javax.swing.JInternalFrame {
      */
     public VistaReservas() {
         initComponents();
-        conexion = new Conexion();
-        huespedData = new HuespedData(conexion);
-        listarHuesped = huespedData.obtenerHuespedes();
+        this.conexion = new Conexion();
+        this.huespedData = new HuespedData(conexion);
+        this.listarHuesped = huespedData.obtenerHuespedes();
         cargarHuespedes();
         modelo = new DefaultTableModel();   
         armarCabeceraTabla();
-        reservaData = new ReservaData(conexion);
+        this.reservaData = new ReservaData(conexion);
     }
 
     /**

@@ -57,7 +57,7 @@ public class TipoHabitacionData {
                 return false;
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al agregar tipo de habitacion");
+            JOptionPane.showMessageDialog(null, "Error de conexion al agregar tipo de habitacion " + ex);
             return false;
         }
       

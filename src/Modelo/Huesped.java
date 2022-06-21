@@ -12,28 +12,28 @@ public class Huesped {
     */
     
     
-    private int id_huesped;
-    private long dni;
-    private String nombres;
-    private String apellidos;
+    private int idHuesped;
+    private String dni;
+    private String nombre;
+    private String apellido;
     private String domicilio;
     private String email;
     private String celular;
 
-    public Huesped(int id_huesped, long dni, String nombres, String apellidos, String domicilio, String email, String celular) {
-        this.id_huesped = -1;
+    public Huesped(int idHuesped, String dni, String nombre, String apellido, String domicilio, String email, String celular) {
+        this.idHuesped = -1;
         this.dni = dni;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.domicilio = domicilio;
         this.email = email;
         this.celular = celular;
     }
 
-    public Huesped(long dni, String nombres, String apellidos, String domicilio, String email, String celular) {
+    public Huesped(String dni, String nombre, String apellido, String domicilio, String email, String celular) {
         this.dni = dni;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.domicilio = domicilio;
         this.email = email;
         this.celular = celular;
@@ -41,26 +41,28 @@ public class Huesped {
    
 
     public Huesped() {
-        this.id_huesped = -1;
+        this.idHuesped = -1;
     }
     
     
-    
-
-    public void setId_huesped(int id_huesped) {
-        this.id_huesped = id_huesped;
+    public int getIdHuesped(){
+        return idHuesped;
     }
 
-    public void setDni(long dni) {
+    public void setIdHuesped(int id_huesped) {
+        this.idHuesped = id_huesped;
+    }
+
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
 
@@ -76,20 +78,17 @@ public class Huesped {
         this.celular = celular;
     }
 
-    public int getId_huesped() {
-        return id_huesped;
-    }
 
-    public long getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public String getNombres() {
-        return nombres;
+    public String getNombre() {
+        return nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getApellido() {
+        return apellido;
     }
 
     public String getDomicilio() {
@@ -108,7 +107,7 @@ public class Huesped {
     
       @Override
     public String toString() {
-        return "Huesped{" + "id_huesped=" + id_huesped + ", dni=" + dni + ", apellido=" + apellidos + ", nombres=" + nombres + ", domicilio=" + domicilio + ", email=" + email + ", celular=" + celular  + "}";
+        return "Huesped{" + "id_huesped=" + idHuesped + ", dni=" + dni + ", apellido=" + apellido + ", nombres=" + nombre + ", domicilio=" + domicilio + ", email=" + email + ", celular=" + celular  + "}";
     }   
     
     

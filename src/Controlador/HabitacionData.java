@@ -40,7 +40,7 @@ public class HabitacionData {
             try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, habitacion.getIdTipoHabitacion() );
                 ps.setInt(2, habitacion.getPiso() );            
-                ps.setInt(3, habitacion.getEstado() );
+                ps.setBoolean(3, habitacion.getEstado() );
 
                 ps.executeUpdate();
                 rs = ps.getGeneratedKeys();
@@ -89,7 +89,7 @@ public class HabitacionData {
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, habitacion.getIdTipoHabitacion() );
                 ps.setInt(2, habitacion.getPiso() );            
-                ps.setInt(3, habitacion.getEstado() );
+                ps.setBoolean(3, habitacion.getEstado() );
                 ps.setInt(4, habitacion.getIdHabitacion() );
                 ps.executeUpdate();
                 System.out.println("Habitacion modificada correctamente");
@@ -102,5 +102,37 @@ public class HabitacionData {
         }
         
     }
+    
+    
+    public Habitacion buscarHabitacionPorId(int idHabitacion) {
+                
+               Habitacion habitacion = null; 
+                String sql = "SELECT * FROM habitacion WHERE idHabitacion LIKE ?";
+
+            
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idHabitacion);
+            ResultSet rs = ps.executeQuery();
+            ps.close();
+            while (rs.next()) {
+                habitacion = new Habitacion();
+
+                habitacion.setIdHabitacion(rs.getInt(1));
+                habitacion.setIdTipoHabitacion(rs.getInt(2));
+                habitacion.setPiso(rs.getInt(3));
+                habitacion.setEstado(rs.getBoolean(4));
+                habitacion.setNroHabitacion(rs.getInt(5));
+                habitacion.setActivo(rs.getBoolean(6));
+                
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error de conexion");
+        }
+        return habitacion;
+
+}
     
 }

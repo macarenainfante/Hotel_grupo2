@@ -17,21 +17,27 @@ public class TipoHabitacion {
     int maxPersonas;
     int cantidadDeCamas;
     String tipoDeCama;
+    String nombreTipoHabitacion;
     double precioPorNoche;
+    boolean activo;
     
-    public TipoHabitacion(int codigo, int maxPersonas, int cantidadCamas, String tipoDeCama, double precioPorNoche){
+    public TipoHabitacion(int codigo, int maxPersonas, int cantidadCamas, String tipoDeCama, String nombre, double precioPorNoche, boolean activo){
         this.codigo = codigo;
         this.maxPersonas = maxPersonas;
         this.cantidadDeCamas=cantidadCamas;
         this.tipoDeCama=tipoDeCama;
+        this.nombreTipoHabitacion = nombre;
         this.precioPorNoche=precioPorNoche;
+        this.activo=activo;
     }
     
-        public TipoHabitacion(int maxPersonas, int cantidadCamas, String tipoDeCama, double precioPorNoche){
+        public TipoHabitacion(int maxPersonas, int cantidadCamas, String tipoDeCama, String nombre, double precioPorNoche, boolean activo){
         this.maxPersonas = maxPersonas;
         this.cantidadDeCamas=cantidadCamas;
         this.tipoDeCama=tipoDeCama;
+        this.nombreTipoHabitacion = nombre;
         this.precioPorNoche=precioPorNoche;
+        this.activo=activo;
     }
         
         public TipoHabitacion(){
@@ -70,12 +76,28 @@ public class TipoHabitacion {
             this.tipoDeCama=tipoDeCama;
         }
         
+        public String getNombreTipoHabitacion(){
+            return nombreTipoHabitacion;
+        }
+        
+        public void setNombreTipoHabitacion(String nombre){
+            this.nombreTipoHabitacion=nombre;
+        }
+        
         public double getPrecioPorNoche(){
             return precioPorNoche;
         }
         
         public void setPrecioPorNoche(double precioPorNoche){
             this.precioPorNoche=precioPorNoche;
+        }
+        
+        public boolean getActivo(){
+            return activo;
+        }
+        
+        public void setActivo(boolean activo){
+            this.activo = activo;
         }
         
     

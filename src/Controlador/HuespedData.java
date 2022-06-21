@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import Modelo.Huesped;
 /**
  *
- * @author pablo
+ * 
  */
 public class HuespedData {
        
@@ -22,39 +22,40 @@ public class HuespedData {
         try {
             con = conexion.getConexion();
         } catch (SQLException ex) {
-            System.out.println("Error de conexion");
+            JOptionPane.showMessageDialog(null, "Error de conexion");
+            //System.exit(0);
         }
     }
 
-    public void agregarHuesped(Huesped p_huesped) {
-        String sql = "INSERT INTO huesped (dni, nombres, apellidos, domicilio, email, celular)  VALUES (?, ?, ?, ?, ?, ?)";
-
-//        String sql = "INSERT INTO huesped (dni, nombres, apellidos, email, celular)  VALUES (?, ?, ?, ?, ?)";
+    public boolean agregarHuesped(Huesped huesped) {
+        String sql = "INSERT INTO huesped (dniHuesped, nombreHuesped, apellidoHuesped, domicilioHuesped, emailHuesped, celularHuesped) VALUES (?,?,?,?,?,?);";
+  
         try {
-
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, p_huesped.getDni());
-            ps.setString(2, p_huesped.getNombres());            
-            ps.setString(3, p_huesped.getApellidos());
-            ps.setString(4, p_huesped.getDomicilio());
-            ps.setString(5, p_huesped.getEmail());
-            ps.setString(6, p_huesped.getCelular());
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs;
+            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, huesped.getDni());
+                ps.setString(2, huesped.getNombre());
+                ps.setString(3, huesped.getApellido());
+                ps.setString(4, huesped.getDomicilio());
+                ps.setString(5, huesped.getEmail());
+                ps.setString(6, huesped.getCelular());
+                ps.executeUpdate();
+                rs = ps.getGeneratedKeys();
+            }
 
             if (rs.next()) {
-                p_huesped.setId_huesped(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, " Numero de Huesped = " + p_huesped.getId_huesped() + " " + p_huesped.getApellidos() + "," + p_huesped.getNombres() + ":" + " agregado Ok.");
-
+                huesped.setIdHuesped(rs.getInt(1));
+                JOptionPane.showMessageDialog(null, "Huesped agregado correctamente");
+                return true;
             } else {
-                JOptionPane.showMessageDialog(null, "No genero el id del huesped");
+                return false;
             }
-            ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion en agregar Huesped " + ex);
-
+            JOptionPane.showMessageDialog(null, "Error de conexion desde HuespedData");
+            return false;
         }
-    }    
+      
+    }   
     
     
     public Huesped buscarHuesped(int p_id_huesped) {
@@ -62,7 +63,7 @@ public class HuespedData {
   
         Huesped huesped = null;
 
-        String sql = "SELECT * FROM huesped WHERE id_huesped =?;";
+        String sql = "SELECT * FROM huesped WHERE idHuesped =?;";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -73,10 +74,10 @@ public class HuespedData {
             if (rs.next()) {
 
                 huesped = new Huesped();
-                huesped.setId_huesped(rs.getInt("id_huesped"));
-                huesped.setDni(rs.getLong("dni"));
-                huesped.setNombres(rs.getString("nombres"));
-                huesped.setApellidos(rs.getString("apellidos"));
+                huesped.setIdHuesped(rs.getInt("idHuesped"));
+                huesped.setDni(rs.getString("dni"));
+                huesped.setNombre(rs.getString("nombre"));
+                huesped.setApellido(rs.getString("apellido"));
                 huesped.setDomicilio(rs.getString("domicilio"));
                 huesped.setEmail(rs.getString("email"));
                 huesped.setCelular(rs.getString("celular"));
@@ -101,14 +102,14 @@ public class HuespedData {
 
     public void modificarHuesped(int p_id_huesped, Huesped p_huesped) {
 
-        String sql = "UPDATE huesped SET dni=?, nombres=?, apellidos=?, domicilio=?, email=?, celular=? WHERE id_huesped=?;";
+        String sql = "UPDATE huesped SET dni=?, nombre=?, apellido=?, domicilio=?, email=?, celular=? WHERE idHuesped=?;";
 
         try {
 
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, p_huesped.getDni());
-            ps.setString(2, p_huesped.getNombres());            
-            ps.setString(3, p_huesped.getApellidos());
+            ps.setString(1, p_huesped.getDni());
+            ps.setString(2, p_huesped.getNombre());            
+            ps.setString(3, p_huesped.getApellido());
             ps.setString(4, p_huesped.getDomicilio());
             ps.setString(5, p_huesped.getEmail());
             ps.setString(6, p_huesped.getCelular());
@@ -133,7 +134,7 @@ public class HuespedData {
     public void borrarHuesped(int p_id_huesped) {
 
         // String de consulta a base de datos
-        String sql = "DELETE FROM huesped WHERE id_huesped=?";
+        String sql = "DELETE FROM huesped WHERE idHuesped=?";
 
         try {
 
@@ -150,14 +151,14 @@ public class HuespedData {
 
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion desde insertar un Huesped " + ex);
+            JOptionPane.showMessageDialog(null, "Error de conexion desde borrar un Huesped " + ex);
 
         }
     }
 
 
 
-    public List<Huesped> obtenerHuespedes() {
+    public ArrayList<Huesped> obtenerHuespedes() {
 
         ArrayList<Huesped> huespedes = new ArrayList<Huesped>();
 
@@ -172,10 +173,10 @@ public class HuespedData {
             while (rs.next()) {
                 // Creacion y llenado de Huespedes para ser insertados en la lista
                 huesped = new Huesped();
-                huesped.setId_huesped(rs.getInt("id_huesped"));
-                huesped.setDni(rs.getLong("dni"));
-                huesped.setNombres(rs.getString("nombres"));                
-                huesped.setApellidos(rs.getString("apellidos"));
+                huesped.setIdHuesped(rs.getInt("idHuesped"));
+                huesped.setDni(rs.getString("dni"));
+                huesped.setNombre(rs.getString("nombre"));                
+                huesped.setApellido(rs.getString("apellido"));
                 huesped.setDomicilio(rs.getString("domicilio"));
                 huesped.setEmail(rs.getString("email"));
                 huesped.setCelular(rs.getString("celular"));
@@ -191,7 +192,7 @@ public class HuespedData {
         return huespedes;
     }
 
-      public Huesped buscarHuespedxDni(int p_dni) {
+      public Huesped buscarHuespedxDni(String p_dni) {
 
         // Iniciacion null de la variable cliente
         Huesped huesped = null;
@@ -201,22 +202,22 @@ public class HuespedData {
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, (int) p_dni);
+            ps.setString(1, p_dni);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
                 huesped = new Huesped();
-                huesped.setId_huesped(rs.getInt("id_huesped"));
-                huesped.setDni(rs.getLong("dni"));
-                huesped.setNombres(rs.getString("nombres"));                
-                huesped.setApellidos(rs.getString("apellidos"));
+                huesped.setIdHuesped(rs.getInt("idHuesped"));
+                huesped.setDni(rs.getString("dni"));
+                huesped.setNombre(rs.getString("nombre"));                
+                huesped.setApellido(rs.getString("apellido"));
                 huesped.setDomicilio(rs.getString("domicilio"));
                 huesped.setEmail(rs.getString("email"));
                 huesped.setCelular(rs.getString("celular"));
  
 
-                JOptionPane.showMessageDialog(null, huesped.getApellidos() + " " + huesped.getNombres());
+                JOptionPane.showMessageDialog(null, huesped.getApellido() + " " + huesped.getNombre());
 
             } else {
                 JOptionPane.showMessageDialog(null, " el dni: " + p_dni + ", no pertence a ningun Huesped");

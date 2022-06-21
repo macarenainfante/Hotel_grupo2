@@ -21,31 +21,44 @@ public class Habitacion {
     private int idHabitacion = -1;
     private int idTipoHabitacion;
     private int piso;
-    private int estado;
+    private boolean estado;
+    private int nroHabitacion;
     private boolean activo;
     private TipoHabitacion tipoHabitacion;
     
-    public Habitacion(int idHabitacion, int idTipoHabitacion, int piso, int estado, boolean activo){
+    public Habitacion(int idHabitacion, int idTipoHabitacion, int piso, boolean estado, int nro, boolean activo){
         this.idHabitacion = idHabitacion;
         this.idTipoHabitacion = idTipoHabitacion;
         this.piso = piso;
         this.estado=estado;
+        this.nroHabitacion=nro;
         this.activo = activo;
     }
     
-    public Habitacion(int idTipoHabitacion, int piso, int estado, boolean activo){
+    public Habitacion(int idTipoHabitacion, int piso, boolean estado, int nro, boolean activo){
         this.idTipoHabitacion = idTipoHabitacion;
         this.piso = piso;
         this.estado=estado;
+        this.nroHabitacion=nro;
         this.activo = activo;
     }
     
-    public Habitacion(TipoHabitacion tipo, int piso, int estado, boolean activo){
+    public Habitacion(TipoHabitacion tipo, int piso, boolean estado, int nro, boolean activo){
         this.tipoHabitacion=tipo;
         this.piso = piso;
         this.estado=estado;
+        this.nroHabitacion=nro;
         this.activo = activo;
     }
+    
+        public Habitacion(int idHabitacion, TipoHabitacion tipo, int piso, boolean estado, int nro, boolean activo){
+        this.tipoHabitacion=tipo;
+        this.piso = piso;
+        this.estado=estado;
+        this.nroHabitacion=nro;
+        this.activo = activo;
+    }
+    
     
     public Habitacion(){
         
@@ -78,12 +91,20 @@ public class Habitacion {
         this.piso=piso;        
     }
     
-    public int getEstado(){
-        return estado;
+    public boolean getEstado(){
+        return true;
     }
     
-    public void setEstado(int estado){
+    public void setEstado(boolean estado){
         this.estado=estado;
+    }
+    
+    public int getNroHabitacion(){
+        return nroHabitacion;
+    }
+    
+    public void setNroHabitacion(int nro){
+        this.nroHabitacion=nro;
     }
     
     public boolean getActivo(){
@@ -106,18 +127,20 @@ public class Habitacion {
 
     
     public void conocerEstado(){
-        if (estado==0){
+        if (estado==true){
             System.out.println("La habitacion se encuentra en refaccion");
-        }else if (estado==1){
+        }else if (estado==false){
             System.out.println("La Habitacion se encuentra habilitada");
         }
     }
     
-    public void listaParaUsar(){
-        if (this.estado == 1 && this.activo==true){
+    public boolean listaParaUsar(){
+        if (this.estado == false && this.activo==true){            
             System.out.println("La habitacion se encuentra disponible para usar");
+            return true;
         }else{
             System.out.println("La habitacion NO se encuentra disponible");
+            return false;
         }
     }
     

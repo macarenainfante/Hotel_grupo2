@@ -37,21 +37,22 @@ public class TipoHabitacionData {
         String sql = "INSERT INTO `tipo_habitacion`(`cantidadPers`, `cantCamas`, `tipoCamas`, `nombreTipoHabitacion`, `precio`, `activo`) VALUES ('?','?','?','?','?','?')";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, tipoHabitacion.getMaxPersonas());
-            ps.setInt(2, tipoHabitacion.getCantidadDeCamas());            
-            ps.setString(3, tipoHabitacion.getTipoDeCama() );
-            ps.setString(4, tipoHabitacion.getNombreTipoHabitacion() );
-            ps.setDouble(5, tipoHabitacion.getPrecioPorNoche() );
-            ps.setBoolean(6, tipoHabitacion.getActivo() );
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ResultSet rs;
+            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setInt(1, tipoHabitacion.getMaxPersonas());
+            	ps.setInt(2, tipoHabitacion.getCantidadDeCamas());            
+            	ps.setString(3, tipoHabitacion.getTipoDeCama() );
+            	ps.setString(4, tipoHabitacion.getNombreTipoHabitacion() );
+            	ps.setDouble(5, tipoHabitacion.getPrecioPorNoche() );
+            	ps.setBoolean(6, tipoHabitacion.getActivo() );
+                ps.executeUpdate();
+                rs = ps.getGeneratedKeys();
+            }
 
             if (rs.next()) {
                 tipoHabitacion.setCodigo(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, " Tipo de Habitacion agregada correctamente");
+                JOptionPane.showMessageDialog(null, "Tipo de habitacion agregada correctamente");
                 return true;
-                
             } else {
                 return false;
             }
@@ -59,6 +60,7 @@ public class TipoHabitacionData {
             JOptionPane.showMessageDialog(null, "Error de conexion al agregar tipo de habitacion");
             return false;
         }
+      
     }
         
         
@@ -86,8 +88,7 @@ public class TipoHabitacionData {
                 tipoHabitacion.setPrecioPorNoche(rs.getDouble("precio"));
                 tipoHabitacion.setActivo(rs.getBoolean("activo"));
                 
-                JOptionPane.showMessageDialog(null, "Se encontro Tipo de Habitacion");
-
+               
             } else {
                 JOptionPane.showMessageDialog(null, " Id de Tipo de Habitacion inexistente");
             }

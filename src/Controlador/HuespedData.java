@@ -16,58 +16,55 @@ import Modelo.Huesped;
  */
 public class HuespedData {
        
-    private Connection con = null;
+    Connection con=null;
 
-    public HuespedData(Conexion conexion) {
-        try {
-            con = conexion.getConexion();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion");
-            //System.exit(0);
-        }
+    public HuespedData(Conexion con) {
+       try{ this.con = con.getConexion();
+       }catch(Exception e)
+       { JOptionPane.showMessageDialog(null, "Error de conexion");
+       }
     }
 
-    public boolean agregarHuesped(Huesped huesped) {
+    public void agregarHuesped(Huesped huesped) {
         String sql = "INSERT INTO huesped (dniHuesped, nombreHuesped, apellidoHuesped, domicilioHuesped, emailHuesped, celularHuesped) VALUES (?,?,?,?,?,?);";
   
         try {
-            ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, huesped.getDni());
-                ps.setString(2, huesped.getNombre());
-                ps.setString(3, huesped.getApellido());
-                ps.setString(4, huesped.getDomicilio());
-                ps.setString(5, huesped.getEmail());
-                ps.setString(6, huesped.getCelular());
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-            }
-
+            PreparedStatement ps= con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, huesped.getDni());
+            ps.setString(2, huesped.getNombre());
+            ps.setString(3, huesped.getApellido());
+            ps.setString(4, huesped.getDomicilio());
+            ps.setString(5, huesped.getEmail());
+            ps.setString(6, huesped.getCelular());
+            
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            
             if (rs.next()) {
                 huesped.setIdHuesped(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "Huesped agregado correctamente");
-                return true;
+                
             } else {
-                return false;
+                JOptionPane.showMessageDialog(null, "Error al agregar Huesped");
             }
+            ps.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de conexion desde HuespedData");
-            return false;
+            
         }
       
     }   
     
     
-    public Huesped buscarHuesped(int p_id_huesped) {
-
+    public Huesped buscarHuesped(int idHuesped) {
   
-        Huesped huesped = null;
+        Huesped huesped = new Huesped();
 
         String sql = "SELECT * FROM huesped WHERE idHuesped =?;";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, p_id_huesped);
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idHuesped);
 
             ResultSet rs = ps.executeQuery();
 
@@ -82,7 +79,7 @@ public class HuespedData {
                 huesped.setEmail(rs.getString("email"));
                 huesped.setCelular(rs.getString("celular"));
                 
-                JOptionPane.showMessageDialog(null, " Se encontro Id:" + huesped.toString());
+                JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
 
             } else {
 
@@ -100,7 +97,7 @@ public class HuespedData {
 
 
 
-    public void modificarHuesped(int p_id_huesped, Huesped p_huesped) {
+    public void modificarHuesped(int idHuesped, Huesped p_huesped) {
 
         String sql = "UPDATE huesped SET dni=?, nombre=?, apellido=?, domicilio=?, email=?, celular=? WHERE idHuesped=?;";
 
@@ -113,7 +110,7 @@ public class HuespedData {
             ps.setString(4, p_huesped.getDomicilio());
             ps.setString(5, p_huesped.getEmail());
             ps.setString(6, p_huesped.getCelular());
-            ps.setInt(7, p_id_huesped);
+            ps.setInt(7, idHuesped);
 
             int rs = ps.executeUpdate();
 
@@ -131,7 +128,7 @@ public class HuespedData {
     }
 // borrado logico tambien funciona para desactivar al cliente //
 
-    public void borrarHuesped(int p_id_huesped) {
+    public void borrarHuesped(int idHuesped) {
 
         // String de consulta a base de datos
         String sql = "DELETE FROM huesped WHERE idHuesped=?";
@@ -139,7 +136,7 @@ public class HuespedData {
         try {
 
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, p_id_huesped);
+            ps.setLong(1, idHuesped);
 
             int rs = ps.executeUpdate();
 
@@ -192,40 +189,39 @@ public class HuespedData {
         return huespedes;
     }
 
-      public Huesped buscarHuespedxDni(String p_dni) {
+      public Huesped buscarHuespedxDni(String dni) {
 
-        // Iniciacion null de la variable cliente
-        Huesped huesped = null;
+        Huesped huesped = new Huesped();
 
-        // String de consulta a base de datos
-        String sql = "SELECT * FROM huesped WHERE dni =?;";
+        String sql = "SELECT * FROM huesped WHERE idHuesped =?;";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, p_dni);
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, dni);
 
             ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
 
                 huesped = new Huesped();
                 huesped.setIdHuesped(rs.getInt("idHuesped"));
                 huesped.setDni(rs.getString("dni"));
-                huesped.setNombre(rs.getString("nombre"));                
+                huesped.setNombre(rs.getString("nombre"));
                 huesped.setApellido(rs.getString("apellido"));
                 huesped.setDomicilio(rs.getString("domicilio"));
                 huesped.setEmail(rs.getString("email"));
                 huesped.setCelular(rs.getString("celular"));
- 
-
-                JOptionPane.showMessageDialog(null, huesped.getApellido() + " " + huesped.getNombre());
+                
+                JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
 
             } else {
-                JOptionPane.showMessageDialog(null, " el dni: " + p_dni + ", no pertence a ningun Huesped");
 
+                JOptionPane.showMessageDialog(null, "Dni de Huesped inexistente");
             }
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, " Error de conexion desde buscar Huesped por dni " + ex);
+
+            JOptionPane.showMessageDialog(null, " Error de conexion desde buscar Huesped por DNI " + ex);
 
         }
 

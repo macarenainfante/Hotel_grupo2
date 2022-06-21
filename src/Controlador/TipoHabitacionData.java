@@ -20,45 +20,46 @@ import javax.swing.JOptionPane;
  * @author Macarena Infante
  */
 public class TipoHabitacionData {    
-    private Connection con = null;
-    
+    private Conexion conexion;
+    private Connection con=null;
+
     /**/
 
     public TipoHabitacionData(Conexion conexion) {
-        try {
-            con = conexion.getConexion();
-        } catch (SQLException ex) {
-            System.out.println("Error de conexion");
-        }
+        try{ 
+           this.con = conexion.getConexion();
+        }catch(Exception e){
+           JOptionPane.showMessageDialog(null, "Error de conexion en Tipo de Habitacion");
+       }
     }
     
     
-        public boolean agregarTipoHabitacion(TipoHabitacion tipoHabitacion) {
-        String sql = "INSERT INTO `tipo_habitacion`(`cantidadPers`, `cantCamas`, `tipoCamas`, `nombreTipoHabitacion`, `precio`, `activo`) VALUES ('?','?','?','?','?','?')";
+        public void agregarTipoHabitacion(TipoHabitacion tipoHabitacion) {
+        String sql = "INSERT INTO tipo_habitacion(idTipoHabitacion, cantidadPers, cantCamas, tipoCamas, nombreTipoHabitacion, precio, activo) VALUES (?,?,?,?,?,?,?)";
 
         try {
-            ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, tipoHabitacion.getMaxPersonas());
-            	ps.setInt(2, tipoHabitacion.getCantidadDeCamas());            
-            	ps.setString(3, tipoHabitacion.getTipoDeCama() );
-            	ps.setString(4, tipoHabitacion.getNombreTipoHabitacion() );
-            	ps.setDouble(5, tipoHabitacion.getPrecioPorNoche() );
-            	ps.setBoolean(6, tipoHabitacion.getActivo() );
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-            }
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, tipoHabitacion.getCodigo());
+            ps.setInt(2, tipoHabitacion.getMaxPersonas());
+            ps.setInt(3, tipoHabitacion.getCantidadDeCamas());            
+            ps.setString(4, tipoHabitacion.getTipoDeCama() );
+            ps.setString(5, tipoHabitacion.getNombreTipoHabitacion() );
+            ps.setDouble(6, tipoHabitacion.getPrecioPorNoche() );
+            ps.setBoolean(7, tipoHabitacion.getActivo() );
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            
 
             if (rs.next()) {
                 tipoHabitacion.setCodigo(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "Tipo de habitacion agregada correctamente");
-                return true;
+        
             } else {
-                return false;
+                JOptionPane.showMessageDialog(null, "Error al agregar tipo de habitacion");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de conexion al agregar tipo de habitacion " + ex);
-            return false;
+        
         }
       
     }
@@ -104,10 +105,10 @@ public class TipoHabitacionData {
         public void modificarTipoHabitacion(int idTipoHabitacion, TipoHabitacion tipoHabitacion) {
 
         String sql = "UPDATE tipo_habitacion SET cantidadPers=?, cantCamas=?, tipoCamas=?, nombreTipoHabitacion=?, precio=?, activo=? WHERE idTipoHabitacion=?;";
-
+        PreparedStatement ps=null;
         try {
 
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, tipoHabitacion.getMaxPersonas());
             ps.setInt(2, tipoHabitacion.getCantidadDeCamas());            
             ps.setString(3, tipoHabitacion.getTipoDeCama());

@@ -19,88 +19,76 @@ import javax.swing.JOptionPane;
  */
 public class HabitacionData {
    
-
-       
+   
     private Connection con = null;
 
     public HabitacionData(Conexion conexion) {
         try {
-            con = conexion.getConexion();
-        } catch (SQLException ex) {
-            System.out.println("Error de conexion");
+            this.con = conexion.getConexion();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de conexion.");
         }
     }
     
     
-    public boolean altaHabitacion(Habitacion habitacion) {
+    public void altaHabitacion(Habitacion habitacion) {
         String sql = "INSERT INTO habitacion (idHabitacion, piso, estado)  VALUES (?, ?, ?)";
-
         try {
-            ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, habitacion.getIdTipoHabitacion() );
-                ps.setInt(2, habitacion.getPiso() );            
-                ps.setBoolean(3, habitacion.getEstado() );
-
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-            }
-
-            if (rs.next()) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+              ps.setInt(1, habitacion.getIdTipoHabitacion() );
+              ps.setInt(2, habitacion.getPiso() );            
+              ps.setBoolean(3, habitacion.getEstado() );
+              ps.executeUpdate();
+              ResultSet rs = ps.getGeneratedKeys();            
+              if (rs.next()) {
                 habitacion.setIdHabitacion(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, "Habitacion agregada correctamente");
-                return true;
-            } else {
-                return false;
-            }
+                JOptionPane.showMessageDialog(null, "Habitacion agregada correctamente");                
+              } else {
+                JOptionPane.showMessageDialog(null, "No se pudo agregar la habitacion");
+              }
+            ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al agregar habitacion");
-            return false;
+            JOptionPane.showMessageDialog(null, "Error de conexion desde Agregar Habitacion en HabitacionData");
         }
     }        
     
     
-    public boolean bajaHabitacion(Habitacion habitacion){
+    public void bajaHabitacion(int idHabitacion){
         
-            String sql = "DELETE FROM habitacion WHERE idHabitacion=?";
-
         try {
-            //ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, habitacion.getIdHabitacion());
-                ps.executeUpdate();
-                System.out.println("Habitacion dada de baja correctamente");
-                return true; // falta hacer que retorne true solo si encontro y pudo modificar el alumno
-            }
+            String sql = "UPDATE habitacion SET estado = 1 WHERE idHabitacion = ? ";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idHabitacion);
+            ps.executeUpdate();
+            ps.close();
+            JOptionPane.showMessageDialog(null, "Habitacion eliminada correctamente");
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al dar de baja a la habitacion");
-            return false;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de conexion desde borrar habitacion en HabitacionData");
         }
         
     }
     
-    public boolean modificacionHabitacion(Habitacion habitacion){
+    public Habitacion modificacionHabitacion(int idHabitacion, Habitacion habitacion){
         
-        String sql = "UPDATE habitacion (id_tipo_habitacion, piso, estado) VALUES (?, ?, ?) WHERE idHabitacion=?";
-
+        String sql = "UPDATE habitacion SET idTipoHabitacion=?, nroHabitacion =?, piso=?, estado=? WHERE idHabitacion=?";
+        PreparedStatement ps = null;
         try {
-            //ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, habitacion.getIdTipoHabitacion() );
-                ps.setInt(2, habitacion.getPiso() );            
-                ps.setBoolean(3, habitacion.getEstado() );
-                ps.setInt(4, habitacion.getIdHabitacion() );
+                ps.setInt(2, habitacion.getNroHabitacion() );
+                ps.setInt(3, habitacion.getPiso() );            
+                ps.setBoolean(4, habitacion.getEstado() );
+                ps.setInt(5, habitacion.getIdHabitacion() );
                 ps.executeUpdate();
                 System.out.println("Habitacion modificada correctamente");
-                return true; // falta hacer que retorne true solo si encontro y pudo modificar el alumno
-            }
+                
+            
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al modificar habitacion");
-            return false;
+            JOptionPane.showMessageDialog(null, "Error de conexion al modificar habitacion desde HabitacionData");
+            
         }
-        
+        return habitacion;
     }
     
     

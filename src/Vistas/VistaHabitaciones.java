@@ -301,7 +301,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
          
         if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
             Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
-            hd.modificacionHabitacion(habitacion);
+            hd.modificacionHabitacion(habitacion.getIdHabitacion(), habitacion);
             textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
             
         } else {
@@ -318,7 +318,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
          
         if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
             Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
-            hd.bajaHabitacion(habitacion);
+            hd.bajaHabitacion(habitacion.getIdHabitacion());
             textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
             
         } else {

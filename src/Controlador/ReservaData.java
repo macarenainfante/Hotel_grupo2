@@ -8,12 +8,14 @@ package Controlador;
 import Modelo.Habitacion;
 import Modelo.Huesped;
 import Modelo.Reserva;
+import Modelo.TipoHabitacion;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -23,13 +25,15 @@ import javax.swing.JOptionPane;
  */
 public class ReservaData {
     
-        private Connection con = null;
+    private Conexion conexion;
+    private Connection con = null;
 
     public ReservaData(Conexion conexion) {
         try {
-            con = conexion.getConexion();
-        } catch (SQLException ex) {
-            System.out.println("Error de conexion");
+            this.conexion = conexion;
+            this.con = conexion.getConexion();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error de conexion en Reserva Data");
         }
     }
     
@@ -69,57 +73,51 @@ public class ReservaData {
         
     }
     
-    public boolean cancelarReserva(int idReserva){
-        
+    public void cancelarReserva(int idReserva){
+       
+    try {   
         String sql = "UPDATE reserva SET activo = 0 WHERE idReserva = ?";
-
-        try {
-            ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, idReserva);
-                ps.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Reserva cancelada correctamente");
-                return true; // falta hacer que retorne true solo si encontro y pudo modificar el alumno
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al eliminar reserva");
-            return false;
-        }
-        
+        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, idReserva);
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Reserva cancelada correctamente");
+        ps.close();
     }
+    catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error de conexion al eliminar reserva");            
+    }
+        
+   }
     
 
     
-    public boolean crearReserva(Reserva reserva){
+    public void crearReserva(Reserva reserva){
         
         String sql = "INSERT INTO reserva (idHuesped, idHabitacion, cantidadPers, checkIn, checkOut, total)  VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-            ResultSet rs;
-            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1, reserva.getHuesped().getIdHuesped() );
-                ps.setInt(2, reserva.getHabitacion().getIdHabitacion() );            
-                ps.setInt(3, reserva.getCantPersonas() );
-                ps.setDate(4, Date.valueOf(reserva.getCheckIn() ) );
-                ps.setDate(5, Date.valueOf(reserva.getCheckOut() ) );
-                ps.setDouble(6, reserva.getTotal() );
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, reserva.getHuesped().getIdHuesped() );
+            ps.setInt(2, reserva.getHabitacion().getIdHabitacion() );            
+            ps.setInt(3, reserva.getCantPersonas() );
+            ps.setDate(4, Date.valueOf(reserva.getCheckIn() ) );
+            ps.setDate(5, Date.valueOf(reserva.getCheckOut() ) );
+            ps.setDouble(6, reserva.getTotal() );
                 
 
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-            }
-
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            
             if (rs.next()) {
                 reserva.setIdReserva(rs.getInt(1));
                 JOptionPane.showMessageDialog(null, "Reserva agregada correctamente");
-                return true;
+                
             } else {
-                return false;
+                JOptionPane.showMessageDialog(null, "Error al agregar reserva");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de conexion al agregar reserva");
-            return false;
+            
         }
     }
         
@@ -191,6 +189,56 @@ public class ReservaData {
         }
     }
         
-        
-    
+
+     public ArrayList<Habitacion> obtenerHabitacionesLibres(LocalDate checkIn, LocalDate checkOut) {
+        ArrayList<Habitacion> habitaciones = new ArrayList<>();
+        try {
+            String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , tipo_habitacion t \n"
+                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 0 and c.cantPersonas >= 2 \n"
+                    + "and h.idHabitacion not in (select r.idHabitacion from reserva r \n"
+                    + "where (? >= r.checkIn \n" 
+                    + "and ? <= r.checkOut)\n" 
+                    + "or (? >= r.checkIn \n" 
+                    + "and ? <= r.checkOut) \n" 
+                    + "and r.activo=true)";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            //localDate a Date
+            ps.setDate(1, Date.valueOf(checkIn));
+            ps.setDate(2, Date.valueOf(checkIn));
+            ps.setDate(3, Date.valueOf(checkOut));
+            ps.setDate(4, Date.valueOf(checkOut));
+            
+           
+            ResultSet rs = ps.executeQuery();
+           
+            while (rs.next()) {
+                Habitacion habitacion;
+               
+                habitacion = buscarHabitacion(rs.getInt("idHabitacion"));
+                habitacion.setNroHabitacion(rs.getInt("nroHabitacion"));
+                habitacion.setPiso(rs.getInt("piso"));
+                TipoHabitacion tipoHabitacion = buscarTipoHabitacion(rs.getInt("idTipoHabitacion"));
+                int idTipoHabitacion=tipoHabitacion.getCodigo();
+                habitacion.setIdTipoHabitacion(idTipoHabitacion);
+                
+                habitaciones.add(habitacion);
+            }
+            ps.close();
+         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones sin reserva.");
+        }
+        return habitaciones;
+    }
+     
+     
+
+
+
+    public TipoHabitacion buscarTipoHabitacion(int idTipoHabitacion) {
+        TipoHabitacionData th = new TipoHabitacionData(conexion);
+        return th.buscarTipoHabitacion(idTipoHabitacion);
+
+    }
+     
 }

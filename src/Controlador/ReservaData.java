@@ -27,11 +27,13 @@ public class ReservaData {
     
     private Conexion conexion;
     private Connection con = null;
+    private HabitacionData habitacionData;
 
     public ReservaData(Conexion conexion) {
         try {
             this.conexion = conexion;
             this.con = conexion.getConexion();
+            habitacionData = new HabitacionData(conexion);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error de conexion en Reserva Data");
         }
@@ -59,7 +61,7 @@ public class ReservaData {
                 Huesped h = buscarHuesped(resultSet.getInt("idHuesped"));
                 reserva.setHuesped(h);
 
-                Habitacion hab = buscarHabitacion(resultSet.getInt("idHabitacion"));
+                Habitacion hab = habitacionData.buscarHabitacionPorId(resultSet.getInt("idHabitacion"));
                 reserva.setHabitacion(hab);
                 
                 reservas.add(reserva);
@@ -148,9 +150,9 @@ public class ReservaData {
         return huesped;
     }
     
-        public Habitacion buscarHabitacion(int idHabitacion) {
+       /* public Habitacion buscarHabitacion(int idHabitacion) {
         Habitacion habitacion = null;
-        String sql = "SELECT * FROM huesped WHERE activo=1 AND idHuesped LIKE ?";
+        String sql = "SELECT * FROM habitacion WHERE activo=1 AND idHuesped LIKE ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -160,7 +162,7 @@ public class ReservaData {
             while (rs.next()) {
                 habitacion = new Habitacion();
                 habitacion.setIdHabitacion(rs.getInt(1));
-                habitacion.setIdTipoHabitacion(rs.getInt(2));
+                habitacion.setTipoHabitacion(rs.getInt(2));
                 habitacion.setPiso(rs.getInt(3));
                 habitacion.setEstado(rs.getBoolean(4));
                 habitacion.setNroHabitacion(rs.getInt(5));
@@ -171,8 +173,8 @@ public class ReservaData {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de conexion al buscar Habitacion");
         }
-        return habitacion;
-    }
+        return habitacion
+    }*/
         
         public void borrarReservaDeHuesped(int idHuesped, int idHabitacion){
         try {
@@ -213,15 +215,13 @@ public class ReservaData {
             ResultSet rs = ps.executeQuery();
            
             while (rs.next()) {
-                Habitacion habitacion;
-               
-                habitacion = buscarHabitacion(rs.getInt("idHabitacion"));
+                Habitacion habitacion = new Habitacion();               
+                habitacion.setIdHabitacion(rs.getInt("idHabitacion"));
                 habitacion.setNroHabitacion(rs.getInt("nroHabitacion"));
                 habitacion.setPiso(rs.getInt("piso"));
                 TipoHabitacion tipoHabitacion = buscarTipoHabitacion(rs.getInt("idTipoHabitacion"));
-                int idTipoHabitacion=tipoHabitacion.getCodigo();
-                habitacion.setIdTipoHabitacion(idTipoHabitacion);
-                
+                habitacion.setTipoHabitacion(tipoHabitacion);
+                habitacion.setEstado(rs.getBoolean("estado"));
                 habitaciones.add(habitacion);
             }
             ps.close();

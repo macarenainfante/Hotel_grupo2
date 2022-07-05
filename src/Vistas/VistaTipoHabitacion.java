@@ -320,7 +320,7 @@ public class VistaTipoHabitacion extends javax.swing.JInternalFrame {
         TipoHabitacion tipoHabitacion1 = new TipoHabitacion(cantidadPersonas, cantidadCamas, tipoCamas, tipoHabitacion, precio, activo);
         tipoHabitaciones.add(tipoHabitacion1);
         tipoHabitacionData.agregarTipoHabitacion(tipoHabitacion1);
-        JOptionPane.showMessageDialog(this, "Tipo de habitacion agregada correctamente");
+       // JOptionPane.showMessageDialog(this, "Tipo de habitacion agregada correctamente");
         
         
     }//GEN-LAST:event_botonGuardarActionPerformed

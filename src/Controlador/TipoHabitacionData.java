@@ -25,6 +25,12 @@ public class TipoHabitacionData {
 
     /**/
 
+    /**
+     *
+     * @param conexion
+     */
+
+
     public TipoHabitacionData(Conexion conexion) {
         try{ 
            this.con = conexion.getConexion();

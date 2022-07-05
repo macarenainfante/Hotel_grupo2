@@ -74,6 +74,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setText("ID");
 
+        textIdHabitacion.setEditable(false);
+
         botonBuscar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         botonBuscar.setForeground(new java.awt.Color(0, 0, 153));
         botonBuscar.setText("Buscar");
@@ -152,16 +154,13 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(textIdHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textIdHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -180,7 +179,9 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(textNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(textNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGap(72, 72, 72)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,14 +214,14 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textIdHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textIdHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textNumeroHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,7 +239,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
                     .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         pack();
@@ -247,24 +248,23 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         // TODO add your handling code here:
 
-        int id=-1;
+        int num=-1;
 
         try {
-            id = Integer.parseInt(textIdHabitacion.getText());
+            num = Integer.parseInt(textNumeroHabitacion.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "El Id de habitacion debe ser numérico");
+            JOptionPane.showMessageDialog(null, "El Numero de habitacion debe ser numérico");
             textIdHabitacion.requestFocus();
         }
 
         Habitacion encontrado = new Habitacion();
-        encontrado = habitacionData.buscarHabitacionPorId(id);
+        encontrado = habitacionData.buscarHabitacionPorNum(num);
 
         if (!Objects.isNull(encontrado)) {
             // Rellenado de campos luego de buscar
 
             textNumeroHabitacion.setText(String.valueOf(encontrado.getNroHabitacion()));
             textPiso.setText(String.valueOf(encontrado.getPiso()));
-
             rbEstado.setSelected(encontrado.getEstado());
             botonBorrar.setEnabled(true);
             botonModificar.setEnabled(true);
@@ -272,7 +272,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
 
         } else {
 
-            rbEstado.setSelected(false);
+            //rbEstado.setSelected(false);
+            JOptionPane.showMessageDialog(this, "Numero incorrecto");
 
         }
     }//GEN-LAST:event_botonBuscarActionPerformed
@@ -280,7 +281,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // TODO add your handling code here:
 
-         HabitacionData hd = new HabitacionData(conexion);
+        /* HabitacionData hd = new HabitacionData(conexion);
          TipoHabitacion tipoHabitacion = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
          
         if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
@@ -290,7 +291,20 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
             
         } else {
             JOptionPane.showMessageDialog(null, "Revise los campos ingresados");
-        }
+        }*/
+        
+        
+        int numHab = Integer.parseInt(textNumeroHabitacion.getText());
+        int piso = Integer.parseInt(textPiso.getText());
+        TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
+        boolean activo = true ;
+        boolean estado = rbEstado.isSelected();
+
+        Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
+        habitaciones.add(habitacion1);
+        habitacionData.altaHabitacion(habitacion1);
+        textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");
+        
 
     }//GEN-LAST:event_botonGuardarActionPerformed
 
@@ -301,8 +315,8 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
          TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
          
         if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
-            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
-            hd.modificacionHabitacion(habitacion.getIdHabitacion(), habitacion);
+            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()), Integer.parseInt(textPiso.getText()) , rbEstado.isSelected() ,Integer.parseInt(textNumeroHabitacion.getText()),  true , tipoHabitacion );
+            hd.modificacionHabitacion(habitacion);
             textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
             
         } else {
@@ -314,17 +328,20 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
         // TODO add your handling code here:
 
-         HabitacionData hd = new HabitacionData(conexion);
-         TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
+         //HabitacionData hd = new HabitacionData(conexion);
+        // TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
          
-        if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
-            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
+    /*    if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
+            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText())  , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true, tipoHabitacion );
             hd.bajaHabitacion(habitacion.getIdHabitacion());
             textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
             
         } else {
             JOptionPane.showMessageDialog(null, "Revise los campos ingresados");
-        }
+        }*/
+    
+        habitacionData.bajaHabitacion(Integer.parseInt(textIdHabitacion.getText()));
+    
     }//GEN-LAST:event_botonBorrarActionPerformed
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
@@ -344,9 +361,9 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         
     //Carga los tipos de habitaciones al ComboBox
         for(TipoHabitacion item:listaTipoHabitaciones){
-            cbTipoHabitacion.addItem(item);
-    
+            cbTipoHabitacion.addItem(item);    
         }
+        cbTipoHabitacion.setSelectedIndex(0);
     }
         
     public void limpiar(){

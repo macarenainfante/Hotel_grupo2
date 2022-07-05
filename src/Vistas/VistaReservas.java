@@ -288,7 +288,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
             TipoHabitacion tipoHabitacion=(TipoHabitacion)modelo.getValueAt(filaSeleccionada, 2);
             int piso=(int)modelo.getValueAt(filaSeleccionada,3);
             
-            Habitacion hab = new Habitacion(idHabitacion,tipoHabitacion, piso, true, numeroHabitacion, true);
+            Habitacion hab = new Habitacion(idHabitacion, piso, true, numeroHabitacion, true,tipoHabitacion);
             
             //jCalendar
             

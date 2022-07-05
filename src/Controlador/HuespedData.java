@@ -78,8 +78,7 @@ public class HuespedData {
                 huesped.setDomicilio(rs.getString("domicilioHuesped"));
                 huesped.setEmail(rs.getString("emailHuesped"));
                 huesped.setCelular(rs.getString("celularHuesped"));
-                
-                JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
+             
 
             } else {
 
@@ -99,7 +98,7 @@ public class HuespedData {
 
     public void modificarHuesped(int idHuesped, Huesped p_huesped) {
 
-        String sql = "UPDATE huesped SET dni=?, nombre=?, apellido=?, domicilio=?, email=?, celular=? WHERE idHuesped=?;";
+        String sql = "UPDATE huesped SET dniHuesped=?, nombreHuesped=?, apellidoHuesped=?, domicilioHuesped=?, emailHuesped=?, celularHuesped=? WHERE idHuesped=?;";
 
         try {
 
@@ -114,11 +113,7 @@ public class HuespedData {
 
             int rs = ps.executeUpdate();
 
-            if (rs > 0) {
-                JOptionPane.showMessageDialog(null, " Huesped se actualizo exitosamente ");
-            } else {
-                JOptionPane.showMessageDialog(null, " Huesped No se pudo actualizar ");
-            }
+
 
             ps.close();
         } catch (SQLException ex) {
@@ -193,7 +188,7 @@ public class HuespedData {
 
         Huesped huesped = new Huesped();
 
-        String sql = "SELECT * FROM huesped WHERE idHuesped =?;";
+        String sql = "SELECT * FROM huesped WHERE dniHuesped =?;";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -205,14 +200,14 @@ public class HuespedData {
 
                 huesped = new Huesped();
                 huesped.setIdHuesped(rs.getInt("idHuesped"));
-                huesped.setDni(rs.getString("dni"));
-                huesped.setNombre(rs.getString("nombre"));
-                huesped.setApellido(rs.getString("apellido"));
-                huesped.setDomicilio(rs.getString("domicilio"));
-                huesped.setEmail(rs.getString("email"));
-                huesped.setCelular(rs.getString("celular"));
+                huesped.setDni(rs.getString("dniHuesped"));
+                huesped.setNombre(rs.getString("nombreHuesped"));
+                huesped.setApellido(rs.getString("apellidoHuesped"));
+                huesped.setDomicilio(rs.getString("domicilioHuesped"));
+                huesped.setEmail(rs.getString("emailHuesped"));
+                huesped.setCelular(rs.getString("celularHuesped"));
                 
-                JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
+                //JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
 
             } else {
 

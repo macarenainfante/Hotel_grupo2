@@ -18,46 +18,34 @@ public class Habitacion {
     
     */
     
-    private int idHabitacion = -1;
-    private int idTipoHabitacion;
+    private int idHabitacion;
     private int piso;
     private boolean estado;
     private int nroHabitacion;
     private boolean activo;
     private TipoHabitacion tipoHabitacion;
-    
-    public Habitacion(int idHabitacion, int idTipoHabitacion, int piso, boolean estado, int nro, boolean activo){
+
+    public Habitacion(int idHabitacion, int piso, boolean estado, int nroHabitacion, boolean activo, TipoHabitacion tipoHabitacion) {
         this.idHabitacion = idHabitacion;
-        this.idTipoHabitacion = idTipoHabitacion;
         this.piso = piso;
-        this.estado=estado;
-        this.nroHabitacion=nro;
+        this.estado = estado;
+        this.nroHabitacion = nroHabitacion;
         this.activo = activo;
+        this.tipoHabitacion = tipoHabitacion;
     }
     
-    public Habitacion(int idTipoHabitacion, int piso, boolean estado, int nro, boolean activo){
-        this.idTipoHabitacion = idTipoHabitacion;
+    
+    
+
+    public Habitacion(int piso, boolean estado, int nroHabitacion, boolean activo, TipoHabitacion tipoHabitacion) {
         this.piso = piso;
-        this.estado=estado;
-        this.nroHabitacion=nro;
+        this.estado = estado;
+        this.nroHabitacion = nroHabitacion;
         this.activo = activo;
+        this.tipoHabitacion = tipoHabitacion;
     }
     
-    public Habitacion(TipoHabitacion tipo, int piso, boolean estado, int nro, boolean activo){
-        this.tipoHabitacion=tipo;
-        this.piso = piso;
-        this.estado=estado;
-        this.nroHabitacion=nro;
-        this.activo = activo;
-    }
     
-        public Habitacion(int idHabitacion, TipoHabitacion tipo, int piso, boolean estado, int nro, boolean activo){
-        this.tipoHabitacion=tipo;
-        this.piso = piso;
-        this.estado=estado;
-        this.nroHabitacion=nro;
-        this.activo = activo;
-    }
     
     
     public Habitacion(){
@@ -72,16 +60,7 @@ public class Habitacion {
     {
         this.idHabitacion=id;
     }
-    
-    public int getIdTipoHabitacion(){
-        return idTipoHabitacion;
-    }
-    
-    public void setIdTipoHabitacion (int idTipoHabitacion)
-    {
-        this.idTipoHabitacion=idTipoHabitacion;
-    }
-    
+        
     
     public int getPiso(){
         return piso;

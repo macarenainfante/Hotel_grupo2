@@ -394,8 +394,7 @@ if (!"".equals(textNombreHuesped.getText()) && !"".equals(textApellidoHuesped.ge
         encontrado = huespedData.buscarHuespedxDni(dni);
 
         if (!Objects.isNull(encontrado)) {
-            // Rellenado de campos luego de buscar
-            
+            // Rellenado de campos luego de buscar            
             
             textIdHuesped.setText(String.valueOf(encontrado.getIdHuesped()));
             textNombreHuesped.setText(encontrado.getNombre());
@@ -409,6 +408,38 @@ if (!"".equals(textNombreHuesped.getText()) && !"".equals(textApellidoHuesped.ge
 
         } 
         
+        
+        /*
+        
+        int id=-1;
+
+        try {
+            id = Integer.parseInt(textIdHuesped.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "El legajo debe ser numérico");
+            textIdHuesped.requestFocus();
+        }
+
+        Huesped encontrado = new Huesped();
+        encontrado = huespedData.buscarHuesped(id);
+
+        if (!Objects.isNull(encontrado)) {
+            // Rellenado de campos luego de buscar
+
+            textNombreHuesped.setText(encontrado.getNombre());
+            textApellidoHuesped.setText(encontrado.getApellido());
+            textDniHuesped.setText(encontrado.getDni());
+            textDomicilioHuesped.setText(encontrado.getDomicilio());
+            textEmailHuesped.setText(encontrado.getEmail());
+            textCelularHuesped.setText(encontrado.getCelular());
+            botonBorrar.setEnabled(true);
+            botonActualizar.setEnabled(true);
+            botonGuardar.setEnabled(false);
+
+        } 
+    }
+        
+        */
         
     }//GEN-LAST:event_botonBuscarPorDniActionPerformed
 

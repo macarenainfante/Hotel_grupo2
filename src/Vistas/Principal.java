@@ -43,7 +43,8 @@ public class Principal extends javax.swing.JFrame {
         MenuItemFormularioTipoHabitaciones = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItemNuevaReserva = new javax.swing.JMenuItem();
+        jMenuItemBuscarReserva = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -98,13 +99,21 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.setText("Reservas");
 
-        jMenuItem4.setText("Formulario Reservas");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemNuevaReserva.setText("Nueva Reserva");
+        jMenuItemNuevaReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jMenuItemNuevaReservaActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        jMenu3.add(jMenuItemNuevaReserva);
+
+        jMenuItemBuscarReserva.setText("Buscar/Borrar Reserva");
+        jMenuItemBuscarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBuscarReservaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItemBuscarReserva);
 
         jMenuBar1.add(jMenu3);
 
@@ -190,7 +199,7 @@ public class Principal extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jMenuItemNuevaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaReservaActionPerformed
         // TODO add your handling code here:
         
         escritorio.removeAll();        
@@ -200,7 +209,19 @@ public class Principal extends javax.swing.JFrame {
         escritorio.moveToFront(vistaReservas);
         escritorio.repaint();
         
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jMenuItemNuevaReservaActionPerformed
+
+    private void jMenuItemBuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuscarReservaActionPerformed
+        // TODO add your handling code here:
+        
+        escritorio.removeAll();        
+        VistaBuscarReservas vistaBuscarReservas = new VistaBuscarReservas();
+        vistaBuscarReservas.setVisible(true);
+        escritorio.add(vistaBuscarReservas);
+        escritorio.moveToFront(vistaBuscarReservas);
+        escritorio.repaint();
+        
+    }//GEN-LAST:event_jMenuItemBuscarReservaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,6 +270,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItemBuscarReserva;
+    private javax.swing.JMenuItem jMenuItemNuevaReserva;
     // End of variables declaration//GEN-END:variables
 }

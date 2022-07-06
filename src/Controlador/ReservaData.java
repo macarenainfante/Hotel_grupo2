@@ -39,15 +39,15 @@ public class ReservaData {
         }
     }
     
-    public ArrayList<Reserva> buscarReservaPorHuesped(int idHuesped){
+    public ArrayList<Reserva> buscarReservaPorHuesped(int dni){
         
         ArrayList<Reserva> reservas = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM inscripcion WHERE idHuesped = ?;";
+            String sql = "SELECT * FROM inscripcion WHERE dniHuesped = ?;";
 
             PreparedStatement statement = con.prepareStatement(sql);
-            statement.setInt(1, idHuesped);
+            statement.setInt(1, dni);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -123,13 +123,13 @@ public class ReservaData {
         }
     }
         
-    public Huesped buscarHuesped(int idHuesped) {
+    public Huesped buscarHuesped(int dni) {
         Huesped huesped = null;
-        String sql = "SELECT * FROM huesped WHERE activo=1 AND idHuesped LIKE ?";
+        String sql = "SELECT * FROM huesped WHERE activo=1 AND dniHuesped LIKE ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idHuesped);
+            ps.setInt(1, dni);
             ResultSet rs = ps.executeQuery();
             ps.close();
             while (rs.next()) {

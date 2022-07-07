@@ -12,6 +12,7 @@ import Modelo.Habitacion;
 import Modelo.Huesped;
 import Modelo.Reserva;
 import Modelo.TipoHabitacion;
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -287,6 +288,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error en el DNI");
             textDniHuesped.requestFocus();
+            textDniHuesped.setBackground(Color.red);
         }
 
         Huesped encontrado = new Huesped();
@@ -302,11 +304,12 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
             textCantidadPersonas.setText(String.valueOf(reservasDelHuesped.getCantPersonas()));
             jCalendarCheckIn.setDate(Date.from(reservasDelHuesped.getCheckIn().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             jCalendarCheckOut.setDate(Date.from(reservasDelHuesped.getCheckOut().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            textPrecioTotal.setText(String.valueOf(reservasDelHuesped.getTotal()));
 
         } 
         
         
-      
+        
         
 
 
@@ -371,6 +374,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
             modelo.removeRow(i);
         }
     }
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

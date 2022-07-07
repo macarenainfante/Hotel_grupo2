@@ -69,7 +69,7 @@ public class HabitacionData {
     public void bajaHabitacion(int idHabitacion){
         
         try {
-            String sql = "DELETE * FROM habitacion WHERE idHabitacion = ? ";
+            String sql = "UPDATE habitacion SET activo = 0 WHERE idHabitacion = ? ";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idHabitacion);
             ps.executeUpdate();
@@ -82,27 +82,58 @@ public class HabitacionData {
         
     }
     
-    public Habitacion modificacionHabitacion(Habitacion habitacion){
+    public void modificacionHabitacion(Habitacion habitacion){
         
-        String sql = "UPDATE habitacion SET idTipoHabitacion=?, nroHabitacion =?, piso=?, estado=? WHERE idHabitacion=?";
-        PreparedStatement ps = null;
+     /*   //int id = habitacion.getTipoHabitacion().getCodigo();
+        
+        String sql = "UPDATE habitacion SET idTipoHabitacion=?, piso=?, estado=?, nroHabitacion=?, activo=? WHERE idHabitacion=?";
+        
         try {
-                ps.setInt(1, habitacion.getTipoHabitacion().getCodigo() );
-                ps.setInt(2, habitacion.getNroHabitacion() );
-                ps.setInt(3, habitacion.getPiso() );            
-                ps.setBoolean(4, habitacion.getEstado() );
-                ps.setInt(5, habitacion.getIdHabitacion() );
-                ps.executeUpdate();
-                System.out.println("Habitacion modificada correctamente");
-                
-            
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al modificar habitacion desde HabitacionData");
-            
+              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+             // ps.setInt(1, habitacion.getIdHabitacion() );
+             //System.out.println("Tipo " + habitacion.getIdHabitacion());
+              ps.setInt(1, habitacion.getTipoHabitacion().getCodigo() );
+              ps.setInt(2, habitacion.getPiso() );            
+              ps.setBoolean(3, habitacion.getEstado() );
+              ps.setInt(4, habitacion.getNroHabitacion()); 
+              ps.setBoolean(5, habitacion.getActivo());
+              ps.setInt(6, habitacion.getIdHabitacion());
+              ps.executeUpdate();
+              //ResultSet rs = ps.getGeneratedKeys(); 
+              JOptionPane.showMessageDialog(null, "Habitacion modificada");
+             /* if (rs.next()) {
+                habitacion.setIdHabitacion(rs.getInt(1));
+                JOptionPane.showMessageDialog(null, "Habitacion modificada correctamente");                
+              } else {
+                JOptionPane.showMessageDialog(null, "No se pudo modificar la habitacion");
+              }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error de conexion desde modificar Habitacion en HabitacionData " + ex);
+                System.out.println("Error "+ ex);
         }
-        return habitacion;
+    }  */
+    
+    
+    String sql = "UPDATE habitacion SET idTipoHabitacion=?, piso=?, estado=?, nroHabitacion=? WHERE idHabitacion=?;";
+
+        try {
+
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, habitacion.getTipoHabitacion().getCodigo() );
+            ps.setInt(2, habitacion.getPiso() );            
+            ps.setBoolean(3, habitacion.getEstado() );
+            ps.setInt(4, habitacion.getNroHabitacion());
+            ps.setInt(5, habitacion.getIdHabitacion());
+
+            int rs = ps.executeUpdate();
+
+            ps.close();
+        } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error de conexion desde modificar habitacion " + ex);
+
+        }
     }
+    
     
     
     public Habitacion buscarHabitacionPorId(int idHabitacion) {

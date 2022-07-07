@@ -353,7 +353,7 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         // TODO add your handling code here:
 
-if (!"".equals(textNombreHuesped.getText()) && !"".equals(textApellidoHuesped.getText()) && !"".equals(textDniHuesped.getText()) && !"".equals(textDomicilioHuesped.getText()) && !"".equals(textCelularHuesped.getText()) && !"".equals(textEmailHuesped.getText()) ) {
+    if (!"".equals(textNombreHuesped.getText()) && !"".equals(textApellidoHuesped.getText()) && !"".equals(textDniHuesped.getText()) && !"".equals(textDomicilioHuesped.getText()) && !"".equals(textCelularHuesped.getText()) && !"".equals(textEmailHuesped.getText()) ) {
             Huesped huesped = new Huesped(textDniHuesped.getText(),textNombreHuesped.getText(),textApellidoHuesped.getText(),textDomicilioHuesped.getText(),textEmailHuesped.getText(),textCelularHuesped.getText());
             huespedData.modificarHuesped(Integer.parseInt(textIdHuesped.getText()), huesped);
             JOptionPane.showMessageDialog(null, "Huesped actualizado correctamente");

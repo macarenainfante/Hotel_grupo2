@@ -102,6 +102,10 @@ public class Habitacion {
         this.tipoHabitacion=tipoHabitacion;
     }
     
+    public int getIdTipoHabitacion(){
+        return tipoHabitacion.getCodigo();
+    }
+    
     
 
     

@@ -49,7 +49,7 @@ public class HuespedData {
             }
             ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion desde HuespedData");
+            JOptionPane.showMessageDialog(null, "Error de conexion desde HuespedData "+ex);
             
         }
       
@@ -166,12 +166,12 @@ public class HuespedData {
                 // Creacion y llenado de Huespedes para ser insertados en la lista
                 huesped = new Huesped();
                 huesped.setIdHuesped(rs.getInt("idHuesped"));
-                huesped.setDni(rs.getString("dni"));
-                huesped.setNombre(rs.getString("nombre"));                
-                huesped.setApellido(rs.getString("apellido"));
-                huesped.setDomicilio(rs.getString("domicilio"));
-                huesped.setEmail(rs.getString("email"));
-                huesped.setCelular(rs.getString("celular"));
+                huesped.setDni(rs.getString("dniHuesped"));
+                huesped.setNombre(rs.getString("nombreHuesped"));                
+                huesped.setApellido(rs.getString("apellidoHuesped"));
+                huesped.setDomicilio(rs.getString("domicilioHuesped"));
+                huesped.setEmail(rs.getString("emailHuesped"));
+                huesped.setCelular(rs.getString("celularHuesped"));
  
 
                 huespedes.add(huesped);

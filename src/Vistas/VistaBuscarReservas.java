@@ -5,6 +5,21 @@
  */
 package Vistas;
 
+import Controlador.Conexion;
+import Controlador.HuespedData;
+import Controlador.ReservaData;
+import Modelo.Habitacion;
+import Modelo.Huesped;
+import Modelo.Reserva;
+import Modelo.TipoHabitacion;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Macarena
@@ -218,7 +233,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         // TODO add your handling code here:
 
-        Conexion con = new Conexion();
+      /*  Conexion con = new Conexion();
         ReservaData reservaData = new ReservaData(con);
         Reserva reser = new Reserva();
 
@@ -242,14 +257,14 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
         }
         else{
             JOptionPane.showMessageDialog(null, "El id no puede quedar vacio");
-        }
+        }*/
 
     }//GEN-LAST:event_botonBuscarActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
         // TODO add your handling code here:
 
-        Conexion con = new Conexion();
+      /*  Conexion con = new Conexion();
         ReservaData reservaData = new ReservaData(con);
         Reserva reser = new Reserva();
 
@@ -273,7 +288,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
         }
         else{
             JOptionPane.showMessageDialog(null, "El id no puede quedar vacio");
-        }
+        }*/
 
     }//GEN-LAST:event_botonBorrarActionPerformed
 

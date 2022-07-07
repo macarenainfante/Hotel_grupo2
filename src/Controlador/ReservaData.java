@@ -192,24 +192,27 @@ public class ReservaData {
     }
         
 
-     public ArrayList<Habitacion> obtenerHabitacionesLibres(LocalDate checkIn, LocalDate checkOut) {
+     public ArrayList<Habitacion> obtenerHabitacionesLibres(LocalDate checkIn, LocalDate checkOut,int cantPerso) {
         ArrayList<Habitacion> habitaciones = new ArrayList<>();
         try {
             String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , tipo_habitacion t \n"
-                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 0 and c.cantPersonas >= 2 \n"
+                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 0 and t.cantidadPers >= ? \n"
                     + "and h.idHabitacion not in (select r.idHabitacion from reserva r \n"
                     + "where (? >= r.checkIn \n" 
                     + "and ? <= r.checkOut)\n" 
                     + "or (? >= r.checkIn \n" 
                     + "and ? <= r.checkOut) \n" 
-                    + "and r.activo=true)";
+                    + "and r.activo=true"
+                    + "and t.cantidadPers >= ? ";
             
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, cantPerso);
             //localDate a Date
-            ps.setDate(1, Date.valueOf(checkIn));
             ps.setDate(2, Date.valueOf(checkIn));
-            ps.setDate(3, Date.valueOf(checkOut));
+            ps.setDate(3, Date.valueOf(checkIn));
             ps.setDate(4, Date.valueOf(checkOut));
+            ps.setDate(5, Date.valueOf(checkOut));
+            ps.setInt(6, cantPerso);
             
            
             ResultSet rs = ps.executeQuery();
@@ -226,7 +229,48 @@ public class ReservaData {
             }
             ps.close();
          } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones sin reserva.");
+            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones sin reserva "+ex);
+        }
+        return habitaciones;
+    }
+     
+     
+          public ArrayList<Habitacion> obtenerHabitacionesOcupadas(LocalDate checkIn, LocalDate checkOut,int cantPerso) {
+        ArrayList<Habitacion> habitaciones = new ArrayList<>();
+        try {
+            String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , reserva r \n"
+                    + "where (? >= r.checkIn \n"
+                    + "and ? <= r.checkOut)\n"
+                    + "or (? >= r.checkIn \n"
+                    + "and ? <= r.checkOut)\n" 
+                    + "and r.activo=true)"
+                    + "and c.cantPersonas>=? ";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            //localDate a Date
+            ps.setDate(1, Date.valueOf(checkIn));
+            ps.setDate(2, Date.valueOf(checkIn));
+            ps.setDate(3, Date.valueOf(checkOut));
+            ps.setDate(4, Date.valueOf(checkOut));
+            ps.setInt(5, cantPerso);
+            
+           
+            ResultSet rs = ps.executeQuery();
+           
+            while (rs.next()) {
+                Habitacion habitacion = new Habitacion();               
+                habitacion.setIdHabitacion(rs.getInt("idHabitacion"));
+                habitacion.setNroHabitacion(rs.getInt("nroHabitacion"));
+                habitacion.setPiso(rs.getInt("piso"));
+                TipoHabitacion tipoHabitacion = buscarTipoHabitacion(rs.getInt("idTipoHabitacion"));
+                habitacion.setTipoHabitacion(tipoHabitacion);
+                habitacion.setEstado(rs.getBoolean("estado"));
+                habitaciones.add(habitacion);
+            }
+            ps.close();
+         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones con reserva.");
         }
         return habitaciones;
     }

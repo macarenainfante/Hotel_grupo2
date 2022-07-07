@@ -9,6 +9,7 @@ import Controlador.Conexion;
 import Controlador.HabitacionData;
 import Controlador.TipoHabitacionData;
 import Modelo.Habitacion;
+import Modelo.Huesped;
 import Modelo.TipoHabitacion;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -265,7 +266,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
 
             textNumeroHabitacion.setText(String.valueOf(encontrado.getNroHabitacion()));
             textPiso.setText(String.valueOf(encontrado.getPiso()));
-            rbEstado.setSelected(encontrado.getEstado());
+            rbEstado.setSelected(!encontrado.getEstado());
             botonBorrar.setEnabled(true);
             botonModificar.setEnabled(true);
             botonGuardar.setEnabled(false);
@@ -279,20 +280,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonBuscarActionPerformed
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        // TODO add your handling code here:
-
-        /* HabitacionData hd = new HabitacionData(conexion);
-         TipoHabitacion tipoHabitacion = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
-         
-        if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
-            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()) , tipoHabitacion , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true );
-            hd.altaHabitacion(habitacion);
-            textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Revise los campos ingresados");
-        }*/
-        
+        // TODO add your handling code here:     
         
         int numHab = Integer.parseInt(textNumeroHabitacion.getText());
         int piso = Integer.parseInt(textPiso.getText());
@@ -311,36 +299,49 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         // TODO add your handling code here:
 
-         HabitacionData hd = new HabitacionData(conexion);
-         TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
+     if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem())) {
          
-        if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
-            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText()), Integer.parseInt(textPiso.getText()) , rbEstado.isSelected() ,Integer.parseInt(textNumeroHabitacion.getText()),  true , tipoHabitacion );
-            hd.modificacionHabitacion(habitacion);
-            textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
-            
+        int numHab = Integer.parseInt(textNumeroHabitacion.getText());
+        int piso = Integer.parseInt(textPiso.getText());
+        TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
+        boolean activo = true ;
+        boolean estado = rbEstado.isSelected();
+         
+            Habitacion habitacion = new Habitacion(piso, estado, numHab, activo, tipo );
+            habitacionData.modificacionHabitacion(habitacion);
+            JOptionPane.showMessageDialog(null, "Habitacion actualizado correctamente");
+
         } else {
-            JOptionPane.showMessageDialog(null, "Revise los campos ingresados");
+            JOptionPane.showMessageDialog(null, "Revise los campos ingresados al intentar actualizar habitacion");
         }
+        
+       /* int numHab = Integer.parseInt(textNumeroHabitacion.getText());
+        int piso = Integer.parseInt(textPiso.getText());
+        TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
+        boolean activo = true ;
+        boolean estado = rbEstado.isSelected();
+
+        Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
+        
+        habitacionData.modificacionHabitacion(habitacion1);
+       // textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");*/
 
     }//GEN-LAST:event_botonModificarActionPerformed
 
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
         // TODO add your handling code here:
 
-         //HabitacionData hd = new HabitacionData(conexion);
-        // TipoHabitacion tipoHabitacion = (TipoHabitacion) cbTipoHabitacion.getSelectedItem();
-         
-    /*    if (!"".equals(textNumeroHabitacion.getText()) && !"".equals(textPiso.getText()) && !"".equals(cbTipoHabitacion.getSelectedItem() ) ) {
-            Habitacion habitacion = new Habitacion ( Integer.parseInt(textIdHabitacion.getText())  , Integer.parseInt(textPiso.getText()) , rbEstado.isSelected(),Integer.parseInt(textNumeroHabitacion.getText()),  true, tipoHabitacion );
-            hd.bajaHabitacion(habitacion.getIdHabitacion());
-            textIdHabitacion.setText(Integer.toString(habitacion.getIdHabitacion()));
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Revise los campos ingresados");
-        }*/
+        int numHab = Integer.parseInt(textNumeroHabitacion.getText());
+        int piso = Integer.parseInt(textPiso.getText());
+        TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
+        boolean activo = true ;
+        boolean estado = rbEstado.isSelected();
+
+        Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
+        habitaciones.add(habitacion1);
+        habitacionData.bajaHabitacion(habitacion1.getIdHabitacion());
+        //textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");
     
-        habitacionData.bajaHabitacion(Integer.parseInt(textIdHabitacion.getText()));
     
     }//GEN-LAST:event_botonBorrarActionPerformed
 
@@ -374,6 +375,14 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         rbEstado.setSelected(false);
     }
     
+        private boolean estaVacio() {
+        String str = "";
+        if (!str.equals(textNumeroHabitacion.getText()) && !str.equals(textPiso) && !str.equals(cbTipoHabitacion.getSelectedItem())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     
 

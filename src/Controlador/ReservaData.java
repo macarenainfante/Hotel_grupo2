@@ -39,9 +39,9 @@ public class ReservaData {
         }
     }
     
-    public ArrayList<Reserva> buscarReservaPorHuesped(int dni){
+    public Reserva buscarReservaPorHuesped(int dni){
         
-        ArrayList<Reserva> reservas = new ArrayList<>();
+        Reserva reserva = new Reserva();
 
         try {
             String sql = "SELECT * FROM inscripcion WHERE dniHuesped = ?;";
@@ -51,7 +51,7 @@ public class ReservaData {
 
             ResultSet resultSet = statement.executeQuery();
 
-            Reserva reserva;
+            //Reserva reserva;
 
             while (resultSet.next()) {
 
@@ -64,14 +64,14 @@ public class ReservaData {
                 Habitacion hab = habitacionData.buscarHabitacionPorId(resultSet.getInt("idHabitacion"));
                 reserva.setHabitacion(hab);
                 
-                reservas.add(reserva);
+                //reservas.add(reserva);
             }
             statement.close();
         } catch (SQLException ex) {
             System.out.println("Error al obtener las reservas del huesped " + ex.getMessage());
         }
 
-        return reservas;
+        return reserva;
         
     }
     

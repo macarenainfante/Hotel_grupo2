@@ -14,9 +14,12 @@ import Modelo.Reserva;
 import Modelo.TipoHabitacion;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,12 +28,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Macarena
  */
 public class VistaBuscarReservas extends javax.swing.JInternalFrame {
+    
+    private HuespedData huespedData;
+    private Conexion conexion;
+    private ArrayList <Huesped> listarHuesped;
+    private DefaultTableModel modelo;
+    private ReservaData reservaData;
 
     /**
      * Creates new form VistaBuscarReservas
      */
     public VistaBuscarReservas() {
         initComponents();
+        this.conexion = new Conexion();
+        this.huespedData = new HuespedData(conexion);
+        listarHuesped = huespedData.obtenerHuespedes();
+        
+        modelo = new DefaultTableModel();   
+        armarCabeceraTabla();
+        this.reservaData = new ReservaData(conexion);
     }
 
     /**
@@ -44,7 +60,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        textDni = new javax.swing.JTextField();
+        textDniHuesped = new javax.swing.JTextField();
         botonBuscar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         textCantidadPersonas = new javax.swing.JTextField();
@@ -172,7 +188,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(textDniHuesped, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(18, 18, 18)
                                     .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -196,7 +212,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textDniHuesped, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -258,6 +274,41 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
         else{
             JOptionPane.showMessageDialog(null, "El id no puede quedar vacio");
         }*/
+      
+      Conexion con = new Conexion();
+      ReservaData reservaData = new ReservaData(con);
+      Reserva reserva = new Reserva();
+      
+      
+      String dni= null;
+
+        try {
+            dni = textDniHuesped.getText();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error en el DNI");
+            textDniHuesped.requestFocus();
+        }
+
+        Huesped encontrado = new Huesped();
+        encontrado = huespedData.buscarHuespedxDni(dni);
+        JOptionPane.showMessageDialog(null, "Huesped encontrado: "+encontrado.toString());
+        
+        Reserva reservasDelHuesped = reservaData.buscarReservaPorHuesped(Integer.parseInt(encontrado.getDni()));
+        
+        
+        if (!Objects.isNull(encontrado)) {
+            // Rellenado de campos luego de buscar            
+
+            textCantidadPersonas.setText(String.valueOf(reservasDelHuesped.getCantPersonas()));
+            jCalendarCheckIn.setDate(Date.from(reservasDelHuesped.getCheckIn().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            jCalendarCheckOut.setDate(Date.from(reservasDelHuesped.getCheckOut().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        } 
+        
+        
+      
+        
+
 
     }//GEN-LAST:event_botonBuscarActionPerformed
 
@@ -299,6 +350,29 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonSalirActionPerformed
 
 
+    
+        private void armarCabeceraTabla(){
+        ArrayList<Object> columnas=new ArrayList<Object>();
+        columnas.add("Id Habitacion");
+        columnas.add("Número de Habitacion");
+        columnas.add("Tipo de Habitacion");
+        columnas.add("Estado");
+        columnas.add("Piso");
+        for(Object it:columnas){
+        
+            modelo.addColumn(it);
+        }
+        tablaHabitaciones.setModel(modelo);
+  }
+    
+    private void borrarFilasTabla(){
+        int a = modelo.getRowCount() - 1;
+        for (int i= a ; i>=0; i--){
+            modelo.removeRow(i);
+        }
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBorrar;
     private javax.swing.JButton botonBuscar;
@@ -315,7 +389,7 @@ public class VistaBuscarReservas extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaHabitaciones;
     private javax.swing.JTextField textCantidadPersonas;
-    private javax.swing.JTextField textDni;
+    private javax.swing.JTextField textDniHuesped;
     private javax.swing.JTextField textPrecioTotal;
     // End of variables declaration//GEN-END:variables
 }

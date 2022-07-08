@@ -151,6 +151,7 @@ public class VistaTipoHabitacion extends javax.swing.JInternalFrame {
             }
         });
 
+        checkBoxActivo.setSelected(true);
         checkBoxActivo.setText("Activo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -320,6 +321,7 @@ public class VistaTipoHabitacion extends javax.swing.JInternalFrame {
         TipoHabitacion tipoHabitacion1 = new TipoHabitacion(cantidadPersonas, cantidadCamas, tipoCamas, tipoHabitacion, precio, activo);
         tipoHabitaciones.add(tipoHabitacion1);
         tipoHabitacionData.agregarTipoHabitacion(tipoHabitacion1);
+        textIdTipoHabitacion.setText(String.valueOf(tipoHabitacion1.getCodigo()));
        // JOptionPane.showMessageDialog(this, "Tipo de habitacion agregada correctamente");
         
         

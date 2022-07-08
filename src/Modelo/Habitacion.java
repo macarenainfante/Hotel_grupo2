@@ -48,6 +48,8 @@ public class Habitacion {
     
     
     
+    
+    
     public Habitacion(){
         
     }
@@ -71,7 +73,7 @@ public class Habitacion {
     }
     
     public boolean getEstado(){
-        return true;
+        return estado;
     }
     
     public void setEstado(boolean estado){
@@ -104,6 +106,14 @@ public class Habitacion {
     
     public int getIdTipoHabitacion(){
         return tipoHabitacion.getCodigo();
+    }
+    
+    public int estadoEnNum(){
+        if (estado=true){
+            return 1;
+        }else{
+            return 0;
+        }
     }
     
     

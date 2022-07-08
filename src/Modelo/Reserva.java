@@ -24,6 +24,24 @@ public class Reserva {
     private int dias;
     private double monto;
     private int estado;
+
+    public Reserva(int idReserva, Huesped huesped, Habitacion habitacion, LocalDate checkIn, LocalDate checkOut, int cantPersonas, int dias, double monto, int estado) {
+        this.idReserva = idReserva;
+        this.huesped = huesped;
+        this.habitacion = habitacion;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.cantPersonas = cantPersonas;
+        this.dias = dias;
+        this.monto = monto;
+        this.estado = estado;
+    }
+    
+    
+    
+    
+  
+   
     
     public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut, int dias, int estado){
         this.huesped = huesped;
@@ -35,13 +53,14 @@ public class Reserva {
         this.estado=estado;
     }
     
-    public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut, int estado){
+    public Reserva(Huesped huesped, Habitacion habitacion, int cantPersonas, LocalDate checkIn, LocalDate checkOut, int estado, double monto){
         this.huesped = huesped;
         this.habitacion = habitacion;
         this.cantPersonas=cantPersonas;
         this.checkIn = checkIn;
         this.checkOut = checkOut; 
         this.estado=estado;
+        this.monto=monto;
     }
     
     public Reserva(){       
@@ -109,6 +128,10 @@ public class Reserva {
     
     public void calcularMontoTotal(int dias, Habitacion habitacon){
         this.monto = dias * habitacion.getTipoHabitacion().precioPorNoche;
+    }
+    
+    public int getEstado(){
+        return estado;
     }
     
 }

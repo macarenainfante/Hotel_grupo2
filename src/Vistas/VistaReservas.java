@@ -6,8 +6,10 @@
 package Vistas;
 
 import Controlador.Conexion;
+import Controlador.HabitacionData;
 import Controlador.HuespedData;
 import Controlador.ReservaData;
+import Controlador.TipoHabitacionData;
 import Modelo.Habitacion;
 import Modelo.Huesped;
 import Modelo.Reserva;
@@ -15,6 +17,7 @@ import Modelo.TipoHabitacion;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import static java.time.temporal.ChronoUnit.DAYS;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -46,6 +49,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         modelo = new DefaultTableModel();   
         armarCabeceraTabla();
         this.reservaData = new ReservaData(conexion);
+        borrarFilasTabla();
     }
 
     /**
@@ -80,6 +84,8 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jRhabLibres = new javax.swing.JRadioButton();
         jRhabOcupadas = new javax.swing.JRadioButton();
+        botonCalcular = new javax.swing.JButton();
+        botonLimpiar = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
@@ -174,20 +180,30 @@ public class VistaReservas extends javax.swing.JInternalFrame {
             }
         });
 
+        botonCalcular.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        botonCalcular.setForeground(new java.awt.Color(0, 0, 153));
+        botonCalcular.setText("Calcular");
+        botonCalcular.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCalcularActionPerformed(evt);
+            }
+        });
+
+        botonLimpiar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        botonLimpiar.setForeground(new java.awt.Color(0, 0, 153));
+        botonLimpiar.setText("Nueva");
+        botonLimpiar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCalendarCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCalendarCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(121, 121, 121))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -219,13 +235,14 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                         .addGap(288, 288, 288)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(216, 216, 216)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(textPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(119, 119, 119)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(textPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(botonCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jRhabLibres)
                                 .addGap(89, 89, 89)
@@ -233,11 +250,24 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(192, 192, 192))
+                .addGap(57, 57, 57)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111)
+                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(192, 192, 192))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCalendarCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCalendarCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(121, 121, 121))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,13 +310,15 @@ public class VistaReservas extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(botonCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
 
         pack();
@@ -302,15 +334,20 @@ public class VistaReservas extends javax.swing.JInternalFrame {
     
         if(filaSeleccionada!=-1){
                 
-            Huesped huesped = reservaData.buscarHuesped(Integer.parseInt(textDniHuesped.getText()));
+            Huesped huesped = reservaData.buscarHuespedxDni(textDniHuesped.getText());
             
             
-            int idHabitacion=(Integer)modelo.getValueAt(filaSeleccionada,0);
-            int numeroHabitacion=(int)modelo.getValueAt(filaSeleccionada,1);
-            TipoHabitacion tipoHabitacion=(TipoHabitacion)modelo.getValueAt(filaSeleccionada, 2);
-            int piso=(int)modelo.getValueAt(filaSeleccionada,3);
+            int idHabitacion=(Integer)tablaHabitaciones.getValueAt(filaSeleccionada,0);
+            int numeroHabitacion=(int)tablaHabitaciones.getValueAt(filaSeleccionada,1);
+            int idTipoHabitacion=(Integer)tablaHabitaciones.getValueAt(filaSeleccionada, 2); // esto es el ID no tipodehab , dsp hacer THD para buscar el tipo por id
+            boolean estado=(boolean)tablaHabitaciones.getValueAt(filaSeleccionada,3);
+            int piso=(int)tablaHabitaciones.getValueAt(filaSeleccionada,4);
             
-            Habitacion hab = new Habitacion(idHabitacion, piso, true, numeroHabitacion, true,tipoHabitacion);
+            TipoHabitacionData tipoHabData = new TipoHabitacionData(con);
+            TipoHabitacion tipo = new TipoHabitacion();
+            tipo = tipoHabData.buscarTipoHabitacion(idTipoHabitacion);
+            
+            Habitacion hab = new Habitacion(idHabitacion, piso, true, numeroHabitacion, true,tipo);
             
             //jCalendar
             
@@ -321,7 +358,9 @@ public class VistaReservas extends javax.swing.JInternalFrame {
             LocalDate checkIn = LocalDate.parse(fechaIn, formato2);
             LocalDate checkOut = LocalDate.parse(fechaOut, formato2);
             
-            Reserva reserva= new Reserva(huesped, hab, Integer.parseInt(textCantidadPersonas.getText()),checkIn, checkOut, 1);
+            double monto = Double.parseDouble(textPrecioTotal.getText());
+            
+            Reserva reserva= new Reserva(huesped, hab, Integer.parseInt(textCantidadPersonas.getText()),checkIn, checkOut, 1, monto);
             
             
             reservaData.crearReserva(reserva);
@@ -382,6 +421,60 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jRhabLibresActionPerformed
 
+    private void botonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalcularActionPerformed
+        // TODO add your handling code here:
+        
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaIn = formato.format(jCalendarCheckIn.getDate());
+            String fechaOut = formato.format(jCalendarCheckOut.getDate());
+            DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate checkIn = LocalDate.parse(fechaIn, formato2);
+            LocalDate checkOut = LocalDate.parse(fechaOut, formato2);
+        
+        long dias =  DAYS.between(checkIn, checkOut);
+        
+        
+        Conexion con = new Conexion();
+        ReservaData reservaData = new ReservaData(con);
+
+        int filaSeleccionada=tablaHabitaciones.getSelectedRow();
+    
+        if(filaSeleccionada!=-1){
+                
+            Huesped huesped = reservaData.buscarHuespedxDni(textDniHuesped.getText());
+            
+            
+            int idHabitacion=(Integer)tablaHabitaciones.getValueAt(filaSeleccionada,0);
+            int numeroHabitacion=(int)tablaHabitaciones.getValueAt(filaSeleccionada,1);
+            int idTipoHabitacion=(Integer)tablaHabitaciones.getValueAt(filaSeleccionada, 2); // esto es el ID no tipodehab , dsp hacer THD para buscar el tipo por id
+            boolean estado=(boolean)tablaHabitaciones.getValueAt(filaSeleccionada,3);
+            int piso=(int)tablaHabitaciones.getValueAt(filaSeleccionada,4);
+            
+            TipoHabitacionData tipoHabData = new TipoHabitacionData(con);
+            TipoHabitacion tipo = new TipoHabitacion();
+            tipo = tipoHabData.buscarTipoHabitacion(idTipoHabitacion);
+            
+            Habitacion hab = new Habitacion(idHabitacion, piso, true, numeroHabitacion, true,tipo);
+            
+            //jCalendar
+            
+            double monto = tipoHabData.buscarTipoHabitacion(idTipoHabitacion).getPrecioPorNoche();
+            
+            double total = monto * dias;
+            
+            textPrecioTotal.setText(String.valueOf(total));
+            
+        }
+        
+    }//GEN-LAST:event_botonCalcularActionPerformed
+
+    private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
+        // TODO add your handling code here:
+
+        
+        limpiar();
+    }//GEN-LAST:event_botonLimpiarActionPerformed
+
     
     private void armarCabeceraTabla(){
         ArrayList<Object> columnas=new ArrayList<Object>();
@@ -398,6 +491,7 @@ public class VistaReservas extends javax.swing.JInternalFrame {
   }
     
     private void borrarFilasTabla(){
+        
         int a = modelo.getRowCount() - 1;
         for (int i= a ; i>=0; i--){
             modelo.removeRow(i);
@@ -405,13 +499,14 @@ public class VistaReservas extends javax.swing.JInternalFrame {
     }
     
     public void buscarHabitacionesLibres(){
-
+        borrarFilasTabla();
+        
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
-            String fechaIn = formato.format(jCalendarCheckIn.getDate());
-            String fechaOut = formato.format(jCalendarCheckOut.getDate());
-            DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate checkIn = LocalDate.parse(fechaIn, formato2);
-            LocalDate checkOut = LocalDate.parse(fechaOut, formato2);
+        String fechaIn = formato.format(jCalendarCheckIn.getDate());
+        String fechaOut = formato.format(jCalendarCheckOut.getDate());
+        DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate checkIn = LocalDate.parse(fechaIn, formato2);
+        LocalDate checkOut = LocalDate.parse(fechaOut, formato2);
     
         ReservaData resData = new ReservaData(conexion);
         int cantiPersonas = (Integer.parseInt(textCantidadPersonas.getText()));
@@ -423,6 +518,8 @@ public class VistaReservas extends javax.swing.JInternalFrame {
     }
     
     public void buscarHabitacionesOcupadas(){
+        
+        borrarFilasTabla();
 
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
             String fechaIn = formato.format(jCalendarCheckIn.getDate());
@@ -440,12 +537,24 @@ public class VistaReservas extends javax.swing.JInternalFrame {
         }
     }
     
+    public void limpiar(){
+        textDniHuesped.setText("");
+        textNombreHuesped.setText("");
+        textApellidoHuesped.setText("");
+        textCantidadPersonas.setText("");
+        textPrecioTotal.setText("");
+        jRhabLibres.setSelected(false);
+        jRhabOcupadas.setSelected(false);
+    }
+    
 
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
+    private javax.swing.JButton botonCalcular;
     private javax.swing.JButton botonConfirmar;
+    private javax.swing.JButton botonLimpiar;
     private javax.swing.JButton botonSalir;
     private javax.swing.ButtonGroup buttonGroup1;
     private com.toedter.calendar.JCalendar jCalendarCheckIn;

@@ -15,7 +15,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -44,7 +46,7 @@ public class ReservaData {
         Reserva reserva = new Reserva();
 
         try {
-            String sql = "SELECT * FROM inscripcion WHERE dniHuesped = ?;";
+            String sql = "SELECT * FROM reserva WHERE dniHuesped = ?;";
 
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, dni);
@@ -94,17 +96,19 @@ public class ReservaData {
 
     
     public void crearReserva(Reserva reserva){
+        ZoneId defaultZoneId = ZoneId.systemDefault();
         
-        String sql = "INSERT INTO reserva (idHuesped, idHabitacion, cantidadPers, checkIn, checkOut, total)  VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO reserva (idHuesped, idHabitacion, cantidadPers, checkIn, checkOut, total, activo)  VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, reserva.getHuesped().getIdHuesped() );
             ps.setInt(2, reserva.getHabitacion().getIdHabitacion() );            
             ps.setInt(3, reserva.getCantPersonas() );
-            ps.setDate(4, Date.valueOf(reserva.getCheckIn() ) );
-            ps.setDate(5, Date.valueOf(reserva.getCheckOut() ) );
+            ps.setDate(4,  Date.valueOf(reserva.getCheckIn()));
+            ps.setDate(5,  Date.valueOf(reserva.getCheckOut() ));
             ps.setDouble(6, reserva.getTotal() );
+            ps.setInt(7, reserva.getEstado());
                 
 
             ps.executeUpdate();
@@ -123,58 +127,84 @@ public class ReservaData {
         }
     }
         
-    public Huesped buscarHuesped(int dni) {
-        Huesped huesped = null;
-        String sql = "SELECT * FROM huesped WHERE activo=1 AND dniHuesped LIKE ?";
+    public Huesped buscarHuesped(int idHuesped) {
+  
+        Huesped huesped = new Huesped();
+
+        String sql = "SELECT * FROM huesped WHERE idHuesped =?;";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, dni);
-            ResultSet rs = ps.executeQuery();
-            ps.close();
-            while (rs.next()) {
-                huesped = new Huesped();
-                huesped.setIdHuesped(rs.getInt(1));
-                huesped.setDni(rs.getString(2));
-                huesped.setNombre(rs.getString(3));
-                huesped.setApellido(rs.getString(4));
-                huesped.setDomicilio(rs.getString(5));
-                huesped.setEmail(rs.getString(6));
-                huesped.setCelular(rs.getString(7));
-                               
-            }
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idHuesped);
 
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                huesped = new Huesped();
+                huesped.setIdHuesped(rs.getInt("idHuesped"));
+                huesped.setDni(rs.getString("dniHuesped"));
+                huesped.setNombre(rs.getString("nombreHuesped"));
+                huesped.setApellido(rs.getString("apellidoHuesped"));
+                huesped.setDomicilio(rs.getString("domicilioHuesped"));
+                huesped.setEmail(rs.getString("emailHuesped"));
+                huesped.setCelular(rs.getString("celularHuesped"));
+             
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, " Id de Huesped inexistente");
+            }
+            ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al buscar Huesped");
+
+            JOptionPane.showMessageDialog(null, " Error de conexion desde buscar Huesped " + ex);
+
         }
+
         return huesped;
     }
     
-       /* public Habitacion buscarHabitacion(int idHabitacion) {
-        Habitacion habitacion = null;
-        String sql = "SELECT * FROM habitacion WHERE activo=1 AND idHuesped LIKE ?";
+    public Huesped buscarHuespedxDni(String dni) {
+
+        Huesped huesped = new Huesped();
+
+        String sql = "SELECT * FROM huesped WHERE dniHuesped =?;";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, idHabitacion);
-            ResultSet rs = ps.executeQuery();
-            ps.close();
-            while (rs.next()) {
-                habitacion = new Habitacion();
-                habitacion.setIdHabitacion(rs.getInt(1));
-                habitacion.setTipoHabitacion(rs.getInt(2));
-                habitacion.setPiso(rs.getInt(3));
-                habitacion.setEstado(rs.getBoolean(4));
-                habitacion.setNroHabitacion(rs.getInt(5));
-                habitacion.setActivo(rs.getBoolean(6));           
-                               
-            }
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, dni);
 
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                huesped = new Huesped();
+                huesped.setIdHuesped(rs.getInt("idHuesped"));
+                huesped.setDni(rs.getString("dniHuesped"));
+                huesped.setNombre(rs.getString("nombreHuesped"));
+                huesped.setApellido(rs.getString("apellidoHuesped"));
+                huesped.setDomicilio(rs.getString("domicilioHuesped"));
+                huesped.setEmail(rs.getString("emailHuesped"));
+                huesped.setCelular(rs.getString("celularHuesped"));
+                
+                //JOptionPane.showMessageDialog(null, " Se encontro Huesped:" + huesped.toString());
+
+            } else {
+
+                JOptionPane.showMessageDialog(null, "Dni de Huesped inexistente");
+            }
+            ps.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error de conexion al buscar Habitacion");
+
+            JOptionPane.showMessageDialog(null, " Error de conexion desde buscar Huesped por DNI " + ex);
+
         }
-        return habitacion
-    }*/
+
+        return huesped;
+    }
+    
+
         
         public void borrarReservaDeHuesped(int idHuesped, int idHabitacion){
         try {
@@ -196,14 +226,14 @@ public class ReservaData {
         ArrayList<Habitacion> habitaciones = new ArrayList<>();
         try {
             String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , tipo_habitacion t \n"
-                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 0 and t.cantidadPers >= ? \n"
+                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 1 and t.cantidadPers >= ? \n"
                     + "and h.idHabitacion not in (select r.idHabitacion from reserva r \n"
                     + "where (? >= r.checkIn \n" 
                     + "and ? <= r.checkOut)\n" 
                     + "or (? >= r.checkIn \n" 
-                    + "and ? <= r.checkOut) \n" 
-                    + "and r.activo=true"
-                    + "and t.cantidadPers >= ? ";
+                    + "and ? <= r.checkOut \n)"
+                    + "and r.activo=1)";
+                    
             
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, cantPerso);
@@ -212,7 +242,7 @@ public class ReservaData {
             ps.setDate(3, Date.valueOf(checkIn));
             ps.setDate(4, Date.valueOf(checkOut));
             ps.setDate(5, Date.valueOf(checkOut));
-            ps.setInt(6, cantPerso);
+            //ps.setInt(6, cantPerso);
             
            
             ResultSet rs = ps.executeQuery();
@@ -238,22 +268,24 @@ public class ReservaData {
           public ArrayList<Habitacion> obtenerHabitacionesOcupadas(LocalDate checkIn, LocalDate checkOut,int cantPerso) {
         ArrayList<Habitacion> habitaciones = new ArrayList<>();
         try {
-            String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , reserva r \n"
-                    + "where (? >= r.checkIn \n"
-                    + "and ? <= r.checkOut)\n"
-                    + "or (? >= r.checkIn \n"
-                    + "and ? <= r.checkOut)\n" 
-                    + "and r.activo=true)"
-                    + "and c.cantPersonas>=? ";
+            String sql = "select h.idHabitacion, h.idTipoHabitacion, h.nroHabitacion, h.piso, h.estado from habitacion h , tipo_habitacion t \n"
+                    + "where h.idTipoHabitacion=t.idTipoHabitacion and  h.estado = 1 and t.cantidadPers >= ? \n"
+                    + "and h.idHabitacion not in (select r.idHabitacion from reserva r \n"
+                    + "where (? <= r.checkIn \n" 
+                    + "and ? >= r.checkOut)\n" 
+                    + "or (? <= r.checkIn \n" 
+                    + "and ? >= r.checkOut \n)"
+                    + "and r.activo=1)";
+                    
             
             PreparedStatement ps = con.prepareStatement(sql);
-            
+            ps.setInt(1, cantPerso);
             //localDate a Date
-            ps.setDate(1, Date.valueOf(checkIn));
             ps.setDate(2, Date.valueOf(checkIn));
-            ps.setDate(3, Date.valueOf(checkOut));
+            ps.setDate(3, Date.valueOf(checkIn));
             ps.setDate(4, Date.valueOf(checkOut));
-            ps.setInt(5, cantPerso);
+            ps.setDate(5, Date.valueOf(checkOut));
+            //ps.setInt(6, cantPerso);
             
            
             ResultSet rs = ps.executeQuery();
@@ -270,7 +302,7 @@ public class ReservaData {
             }
             ps.close();
          } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones con reserva.");
+            JOptionPane.showMessageDialog(null, "Error al obtener habitaciones sin reserva "+ex);
         }
         return habitaciones;
     }
@@ -283,6 +315,71 @@ public class ReservaData {
         TipoHabitacionData th = new TipoHabitacionData(conexion);
         return th.buscarTipoHabitacion(idTipoHabitacion);
 
+    }
+    
+    
+    public ArrayList<Reserva> buscarReservas(int id){
+        
+        ArrayList<Reserva> reservas = new ArrayList();
+        String sql = "SELECT * FROM reserva WHERE idHuesped = ? and activo=1";
+        
+        try {       
+
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);     
+
+            ResultSet resultSet = ps.executeQuery();
+
+            //Reserva reserva;
+
+            while (resultSet.next()) {
+
+                Reserva reserva = new Reserva();
+                
+                reserva.setIdReserva(resultSet.getInt("idReserva"));
+
+                Huesped h = buscarHuesped(resultSet.getInt("idHuesped"));
+                reserva.setHuesped(h);
+
+                Habitacion hab = habitacionData.buscarHabitacionPorId(resultSet.getInt("idHabitacion"));
+                reserva.setHabitacion(hab);
+                
+                reserva.setCantPersonas(resultSet.getInt("cantidadPers"));
+                
+                Date fechaIn=resultSet.getDate("checkIn");
+                
+                LocalDate checkIn = Instant.ofEpochMilli(fechaIn.getTime())
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDate();
+                
+                
+                reserva.setCheckIn(checkIn);                
+                
+                
+                Date fechaOut=resultSet.getDate("checkOut");
+                
+                LocalDate checkOut = Instant.ofEpochMilli(fechaOut.getTime())
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDate();
+                
+                
+                reserva.setCheckOut(checkOut);
+                
+                
+                
+                reserva.setTotal(resultSet.getInt("total"));
+                
+                reservas.add(reserva);
+                
+                //reservas.add(reserva);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener las reservas del huesped " + ex.getMessage());
+        }
+
+        return reservas;
+        
     }
      
 }

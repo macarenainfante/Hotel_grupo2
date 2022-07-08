@@ -67,14 +67,18 @@ public class HabitacionData {
     
     
     public void bajaHabitacion(int idHabitacion){
-        
+        String sql = "UPDATE habitacion SET activo = 0 WHERE idHabitacion = ? ";        
         try {
-            String sql = "UPDATE habitacion SET activo = 0 WHERE idHabitacion = ? ";
+            
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idHabitacion);
-            ps.executeUpdate();
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Habitacion eliminada correctamente");
+            int rs = ps.executeUpdate();
+            
+            if (rs > 0){
+                JOptionPane.showMessageDialog(null, "Habitacion eliminada correctamente");
+            } else{
+                JOptionPane.showMessageDialog(null, "No se encuentra la habitacion");
+            }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error de conexion desde borrar habitacion en HabitacionData");
@@ -82,51 +86,27 @@ public class HabitacionData {
         
     }
     
-    public void modificacionHabitacion(Habitacion habitacion){
-        
-     /*   //int id = habitacion.getTipoHabitacion().getCodigo();
-        
-        String sql = "UPDATE habitacion SET idTipoHabitacion=?, piso=?, estado=?, nroHabitacion=?, activo=? WHERE idHabitacion=?";
-        
-        try {
-              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
-             // ps.setInt(1, habitacion.getIdHabitacion() );
-             //System.out.println("Tipo " + habitacion.getIdHabitacion());
-              ps.setInt(1, habitacion.getTipoHabitacion().getCodigo() );
-              ps.setInt(2, habitacion.getPiso() );            
-              ps.setBoolean(3, habitacion.getEstado() );
-              ps.setInt(4, habitacion.getNroHabitacion()); 
-              ps.setBoolean(5, habitacion.getActivo());
-              ps.setInt(6, habitacion.getIdHabitacion());
-              ps.executeUpdate();
-              //ResultSet rs = ps.getGeneratedKeys(); 
-              JOptionPane.showMessageDialog(null, "Habitacion modificada");
-             /* if (rs.next()) {
-                habitacion.setIdHabitacion(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, "Habitacion modificada correctamente");                
-              } else {
-                JOptionPane.showMessageDialog(null, "No se pudo modificar la habitacion");
-              }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error de conexion desde modificar Habitacion en HabitacionData " + ex);
-                System.out.println("Error "+ ex);
-        }
-    }  */
+    public void modificacionHabitacion(Habitacion habitacion){          
     
-    
-    String sql = "UPDATE habitacion SET idTipoHabitacion=?, piso=?, estado=?, nroHabitacion=? WHERE idHabitacion=?;";
+    String sql = "UPDATE habitacion SET idTipoHabitacion=?, piso=?, estado=?, nroHabitacion=? WHERE idHabitacion=?";
+     PreparedStatement ps = null;
 
         try {
 
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement(sql);
             ps.setInt(1, habitacion.getTipoHabitacion().getCodigo() );
             ps.setInt(2, habitacion.getPiso() );            
-            ps.setBoolean(3, habitacion.getEstado() );
+            ps.setInt(3, habitacion.estadoEnNum());
             ps.setInt(4, habitacion.getNroHabitacion());
             ps.setInt(5, habitacion.getIdHabitacion());
 
             int rs = ps.executeUpdate();
-
+            
+            if (rs > 0){
+                JOptionPane.showMessageDialog(null, "Habitacion modificada correctamente");
+            } else{
+                JOptionPane.showMessageDialog(null, "No se encuentra la habitacion");
+            }
             ps.close();
         } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error de conexion desde modificar habitacion " + ex);

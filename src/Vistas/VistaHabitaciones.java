@@ -263,10 +263,11 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
 
         if (!Objects.isNull(encontrado)) {
             // Rellenado de campos luego de buscar
-
+            // agregar que se muestre id de habitacion
             textNumeroHabitacion.setText(String.valueOf(encontrado.getNroHabitacion()));
             textPiso.setText(String.valueOf(encontrado.getPiso()));
             rbEstado.setSelected(!encontrado.getEstado());
+            textIdHabitacion.setText(String.valueOf(encontrado.getIdHabitacion()));
             botonBorrar.setEnabled(true);
             botonModificar.setEnabled(true);
             botonGuardar.setEnabled(false);
@@ -291,7 +292,7 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
         habitaciones.add(habitacion1);
         habitacionData.altaHabitacion(habitacion1);
-        textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");
+        textIdHabitacion.setText(String.valueOf(habitacion1.getIdHabitacion()));
         
 
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -306,25 +307,19 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
         boolean activo = true ;
         boolean estado = rbEstado.isSelected();
+        int id = Integer.parseInt(textIdHabitacion.getText());
+        // obtener id
          
-            Habitacion habitacion = new Habitacion(piso, estado, numHab, activo, tipo );
+            Habitacion habitacion = new Habitacion(piso, estado, numHab, activo, tipo ); // agregar id
+            habitacion.getTipoHabitacion().setCodigo(id);
             habitacionData.modificacionHabitacion(habitacion);
-            JOptionPane.showMessageDialog(null, "Habitacion actualizado correctamente");
+           // JOptionPane.showMessageDialog(null, "Habitacion actualizado correctamente");
 
         } else {
             JOptionPane.showMessageDialog(null, "Revise los campos ingresados al intentar actualizar habitacion");
         }
         
-       /* int numHab = Integer.parseInt(textNumeroHabitacion.getText());
-        int piso = Integer.parseInt(textPiso.getText());
-        TipoHabitacion tipo = (TipoHabitacion)cbTipoHabitacion.getSelectedItem();
-        boolean activo = true ;
-        boolean estado = rbEstado.isSelected();
 
-        Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
-        
-        habitacionData.modificacionHabitacion(habitacion1);
-       // textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");*/
 
     }//GEN-LAST:event_botonModificarActionPerformed
 
@@ -338,9 +333,10 @@ public class VistaHabitaciones extends javax.swing.JInternalFrame {
         boolean estado = rbEstado.isSelected();
 
         Habitacion habitacion1 = new Habitacion(piso, estado, numHab, activo, tipo);
-        habitaciones.add(habitacion1);
+  
         habitacionData.bajaHabitacion(habitacion1.getIdHabitacion());
         //textIdHabitacion.setText(habitacion1.getIdHabitacion()+"");
+        limpiar();
     
     
     }//GEN-LAST:event_botonBorrarActionPerformed

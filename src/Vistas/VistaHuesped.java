@@ -72,6 +72,12 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 153));
         jLabel2.setText("ID");
 
+        textIdHuesped.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textIdHuespedActionPerformed(evt);
+            }
+        });
+
         botonBuscar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         botonBuscar.setForeground(new java.awt.Color(0, 0, 153));
         botonBuscar.setText("Buscar");
@@ -93,6 +99,12 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 153));
         jLabel5.setText("DNI:");
+
+        textDniHuesped.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textDniHuespedActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 153));
@@ -327,7 +339,7 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
             Huesped huesped = new Huesped(textDniHuesped.getText(),textNombreHuesped.getText(),textApellidoHuesped.getText(),textDomicilioHuesped.getText(),textEmailHuesped.getText(),textCelularHuesped.getText());
             hd.agregarHuesped(huesped);            
             textIdHuesped.setText(Integer.toString(huesped.getIdHuesped()));
-            JOptionPane.showMessageDialog(null, "Huesped agregado correctamente");
+            
         } else {
             JOptionPane.showMessageDialog(null, "Revise los campos ingresados al intentar agregar huesped");
         }
@@ -381,17 +393,16 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         
-        String dni= null;
-
         try {
-            dni = textDniHuesped.getText();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error en el DNI");
+            int numDni = Integer.parseInt(textDniHuesped.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El dato no es numerico, vuelve a ingresarlo ");
             textDniHuesped.requestFocus();
+            limpiar();
         }
 
         Huesped encontrado = new Huesped();
-        encontrado = huespedData.buscarHuespedxDni(dni);
+        encontrado = huespedData.buscarHuespedxDni(textDniHuesped.getText());
 
         if (!Objects.isNull(encontrado)) {
             // Rellenado de campos luego de buscar            
@@ -408,40 +419,35 @@ public class VistaHuesped extends javax.swing.JInternalFrame {
 
         } 
         
-        
-        /*
-        
-        int id=-1;
-
-        try {
-            id = Integer.parseInt(textIdHuesped.getText());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "El legajo debe ser numérico");
-            textIdHuesped.requestFocus();
-        }
-
-        Huesped encontrado = new Huesped();
-        encontrado = huespedData.buscarHuesped(id);
-
-        if (!Objects.isNull(encontrado)) {
-            // Rellenado de campos luego de buscar
-
-            textNombreHuesped.setText(encontrado.getNombre());
-            textApellidoHuesped.setText(encontrado.getApellido());
-            textDniHuesped.setText(encontrado.getDni());
-            textDomicilioHuesped.setText(encontrado.getDomicilio());
-            textEmailHuesped.setText(encontrado.getEmail());
-            textCelularHuesped.setText(encontrado.getCelular());
-            botonBorrar.setEnabled(true);
-            botonActualizar.setEnabled(true);
-            botonGuardar.setEnabled(false);
-
-        } 
-    }
-        
-        */
+  
         
     }//GEN-LAST:event_botonBuscarPorDniActionPerformed
+
+    private void textIdHuespedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textIdHuespedActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            int cant = Integer.parseInt(textIdHuesped.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El dato no es numerico, vuelve a ingresarlo ");
+            textIdHuesped.requestFocus();
+            limpiar();
+        }
+        
+    }//GEN-LAST:event_textIdHuespedActionPerformed
+
+    private void textDniHuespedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textDniHuespedActionPerformed
+        // TODO add your handling code here:
+        
+       try {
+            int cant = Integer.parseInt(textDniHuesped.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El dato no es numerico, vuelve a ingresarlo ");
+            textDniHuesped.requestFocus();
+            limpiar();
+        }
+        
+    }//GEN-LAST:event_textDniHuespedActionPerformed
 
     
     public void limpiar(){

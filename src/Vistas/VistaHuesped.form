@@ -184,6 +184,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textIdHuesped">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textIdHuespedActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="botonBuscar">
       <Properties>
@@ -244,6 +247,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textDniHuesped">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textDniHuespedActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
